@@ -16,7 +16,8 @@ public class LocalIO {
 		File confFile = new File(localDir,"conf.json");
 		
 		if(!localDir.exists()){
-			localDir.mkdirs();
+			File actionsDir = new File(localDir,"actions");
+			actionsDir.mkdirs();
 		}
 		
 		if(confFile.exists()){
@@ -34,13 +35,13 @@ public class LocalIO {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println(conf.toJSONString());
 			return conf;
 			
 		}
 		else{			
 			JSONObject conf = new JSONObject();
-			conf.put("homeDir", localDir.getAbsolutePath());
+			conf.put("localDir", localDir.getAbsolutePath());
+			conf.put("actionDir", new File(localDir,"actions").getAbsolutePath());
 			
 			try (FileWriter confWriter = new FileWriter(confFile)) {
 				confFile.createNewFile();
@@ -52,5 +53,25 @@ public class LocalIO {
 			
 			return conf;
 		}
+	}
+	
+	public static JSONObject getAction(String id){
+		File localDir = new File(LocalIO.getConfig().get("actionDir").toString());
+		File actionFile = new File(localDir,id);
+		JSONParser parser = new JSONParser();
+		JSONObject action=null;
+		try {
+			action = (JSONObject) parser.parse(new FileReader(actionFile));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return action;
 	}
 }
