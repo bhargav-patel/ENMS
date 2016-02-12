@@ -4,6 +4,7 @@
 *.ear
 *.class
 .classpath
+.project
 # eclipse specific git ignore
 .metadata
 bin/**
