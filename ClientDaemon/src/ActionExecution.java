@@ -22,12 +22,11 @@ public class ActionExecution {
 		this.runCommand = runCommand;
 	}
 	
-	public JSONObject ExecuteAction(JSONObject action){ //TODO Return String with JSON Object
+	public JSONObject ExecuteAction(JSONObject action){ 
 		JSONObject result = null;
 		
 		//ACTION Execution logic considering client OS.
-		
-		
+				
 		
 		return result;
 	}

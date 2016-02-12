@@ -57,7 +57,7 @@ public class LocalIO {
 	
 	public static JSONObject getAction(String id){
 		File localDir = new File(LocalIO.getConfig().get("actionDir").toString());
-		File actionFile = new File(localDir,id);
+		File actionFile = new File(localDir,id+".json");
 		JSONParser parser = new JSONParser();
 		JSONObject action=null;
 		try {

@@ -1,5 +1,7 @@
 import java.net.Socket;
 
+import org.json.simple.JSONObject;
+
 
 public class RequestHandler implements Runnable {
 	Socket socket;
@@ -12,7 +14,9 @@ public class RequestHandler implements Runnable {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-
+		JSONObject action = LocalIO.getAction("12");
+		ActionExecution ae = new ActionExecution(action);
+		JSONObject result = ae.ExecuteAction();
 	}
 
 }
