@@ -18,11 +18,14 @@ public class RequestHandler implements Runnable {
 		JSONObject action = LocalIO.getAction("12");
 		ActionExecution ae = new ActionExecution(action);
 		JSONObject result = ae.ExecuteAction(action);
+<<<<<<< HEAD
 		try {
 			new ClientSocketAgent(socket).sendActionResponse(result);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+=======
+>>>>>>> 92ff6f85c5639cf94004b658488ba24ee46665ef
 	}
 
 }
