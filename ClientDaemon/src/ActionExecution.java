@@ -7,6 +7,8 @@ public class ActionExecution {
 	
 	public ActionExecution(JSONObject action) {
 		// TODO Auto-generated constructor stub
+		fileName = (String) action.get("Name");
+		runCommand = (String) action.get("runCommand");
 	}
 	
 	public String getFileName() {
