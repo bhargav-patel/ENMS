@@ -16,18 +16,20 @@ public class PollingController {
 	public int startPolling(){
 		//TODO schedule and start monitors logic
 		for (final Monitor monitor : monitorList) {//Runs for each monitors
-			
+			int count =0 ;//for debug
 			Thread t = new Thread(new ActionRequest() {//created thread for each monitor
 				@Override
 				public void run() {
 					// TODO Schedule timer for time equal to PollingDuration of monitor in seconds
+					System.out.println("thread->run for startpolling");
 					Timer timer = new Timer();
 					timer.schedule(new TimerTask() {
 						@Override
 						public void run() {
+							System.out.println("thread->run;-sending request");
 							sendRequest();//on completion of timer sends execute request
 						}
-					}, monitor.getPollingDuration()*1000);
+					}, 0,monitor.getPollingDuration()*1000);
 				}
 				
 				@Override
@@ -36,10 +38,12 @@ public class PollingController {
 					MonitorResult mr = serversocketagent.sendExecuteRequest(monitor);
 					DBAgent dba = new DBAgent();
 					dba.updateMonitorResult(mr);
+					System.out.println("request sent");
 					return 0;
 				}
 			});
 			t.start();
+			System.out.println("thread="+ count);
 		}//foreach ends here
 		return 0;
 	}

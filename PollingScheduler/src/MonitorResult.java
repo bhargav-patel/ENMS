@@ -1,10 +1,10 @@
-import java.util.Date;
+import java.sql.Timestamp;
 
 
 public class MonitorResult {
 	
 	private int id;
-	private Date pollTime;
+	private Timestamp pollTime;
 	private String resultData; //TODO Convert to json object
 	private int monitor_id;
 	
@@ -14,10 +14,10 @@ public class MonitorResult {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Date getPollTime() {
+	public Timestamp getPollTime() {
 		return pollTime;
 	}
-	public void setPollTime(Date pollTime) {
+	public void setPollTime(Timestamp pollTime) {
 		this.pollTime = pollTime;
 	}
 	public String getResultData() {

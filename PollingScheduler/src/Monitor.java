@@ -1,11 +1,11 @@
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Monitor {
 	
 	private int id;
 	private String name;
 	private int pollingDuration;
-	private Date lastPoll;
+	private Timestamp lastPoll;
 	private int action_id;
 	private int device_id;
 	
@@ -27,10 +27,10 @@ public class Monitor {
 	public void setPollingDuration(int pollingDuration) {
 		this.pollingDuration = pollingDuration;
 	}
-	public Date getLastPoll() {
+	public Timestamp getLastPoll() {
 		return lastPoll;
 	}
-	public void setLastPoll(Date lastPoll) {
+	public void setLastPoll(Timestamp lastPoll) {
 		this.lastPoll = lastPoll;
 	}
 	public int getAction_id() {

@@ -21,6 +21,7 @@ public class LocalIO {
 		}
 		
 		if(confFile.exists()){
+			System.out.println("Config file exists");
 			JSONParser parser = new JSONParser();
 			JSONObject conf = null;
 			try {
@@ -39,6 +40,7 @@ public class LocalIO {
 			
 		}
 		else{			
+			System.out.println("Config file doesn't exists");
 			JSONObject conf = new JSONObject();
 			conf.put("localDir", localDir.getAbsolutePath());
 			conf.put("actionDir", new File(localDir,"actions").getAbsolutePath());

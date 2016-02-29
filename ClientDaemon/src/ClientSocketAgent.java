@@ -1,7 +1,6 @@
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.Socket;
 
 import org.json.simple.JSONObject;
@@ -20,6 +19,7 @@ public class ClientSocketAgent {
 	
 	
 	public void sendActionResponse(JSONObject action) throws IOException{
+		System.out.println("response sending....");//for debug
 		try {
 			//send action execution result to server via socket
 			ObjectOutputStream oos = new ObjectOutputStream(new DataOutputStream(socket.getOutputStream()));
