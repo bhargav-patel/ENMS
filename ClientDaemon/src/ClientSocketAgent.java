@@ -1,4 +1,10 @@
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
+
+import org.json.simple.JSONObject;
 
 
 public class ClientSocketAgent {
@@ -11,7 +17,17 @@ public class ClientSocketAgent {
 	public void getFile(){
 		//receive file from ServerSocketAgent
 	}
-	public void sendActionResponse(){
-		//send action execution result to server via socket
+	
+	
+	public void sendActionResponse(JSONObject action) throws IOException{
+		try {
+			//send action execution result to server via socket
+			ObjectOutputStream oos = new ObjectOutputStream(new DataOutputStream(socket.getOutputStream()));
+			oos.writeObject(action);
+			oos.flush();
+			oos.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
 	}
 }
