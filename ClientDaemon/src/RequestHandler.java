@@ -1,4 +1,6 @@
+import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream.PutField;
 import java.net.Socket;
 
 import org.json.simple.JSONObject;
@@ -14,18 +16,28 @@ public class RequestHandler implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		JSONObject action = LocalIO.getAction("12");
-		ActionExecution ae = new ActionExecution(action);
-		JSONObject result = ae.ExecuteAction(action);
-<<<<<<< HEAD
+		JSONObject jsonResult = new JSONObject();
+		File actionDir = new File(LocalIO.getConfig().get("actionDir").toString());
+		File[] listofFiles = actionDir.listFiles();
+		
+		for (File file : listofFiles) {
+			jsonResult.put("actionID", file.getName().substring(0,file.getName().indexOf('.')));
+			jsonResult.put("ResultasJSONString", executeFile(file.getName()));
+		}
+		
 		try {
-			new ClientSocketAgent(socket).sendActionResponse(result);
+			new ClientSocketAgent(socket).sendActionResponse(jsonResult);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-=======
->>>>>>> 92ff6f85c5639cf94004b658488ba24ee46665ef
+	}
+
+	private String executeFile(String fileName) {
+		JSONObject action = LocalIO.getAction(fileName.substring(0, fileName.indexOf('.')));
+		ActionExecution ae = new ActionExecution(action);
+		JSONObject result = ae.ExecuteAction(action);
+
+		return result.toJSONString();
 	}
 
 }
