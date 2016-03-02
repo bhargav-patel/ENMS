@@ -11,6 +11,7 @@ public class PollingController {
 		//TODO Load monitorList from database;
 		DBAgent dbagent = new DBAgent();
 		monitorList = dbagent.getMonitorList();
+		dbagent.close();
 	}
 	
 	public int startPolling(){
@@ -35,9 +36,13 @@ public class PollingController {
 				@Override
 				public int sendRequest() {
 					ServerSocketAgent serversocketagent = new ServerSocketAgent();
+					System.out.println("PollingController->sendRequest to :"+monitor.getId()+monitor.getName());
 					MonitorResult mr = serversocketagent.sendExecuteRequest(monitor);
+					serversocketagent.close();
+					System.out.println("Recieved monitor result and now updating monitorResult to DB");
 					DBAgent dba = new DBAgent();
 					dba.updateMonitorResult(mr);
+					dba.close();
 					System.out.println("request sent");
 					return 0;
 				}

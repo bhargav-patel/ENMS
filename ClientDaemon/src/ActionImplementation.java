@@ -22,6 +22,13 @@ public class ActionImplementation {
 		
 		return result;
 	}
+	
+	public static String get_RAM_info(){
+		
+		SystemInfo si = new SystemInfo();
+		SystemInfo.MemoryInfo ramInfo = si.new MemoryInfo();
+		return ramInfo.get_RAM().toJSONString();
+	}
 
 
 }

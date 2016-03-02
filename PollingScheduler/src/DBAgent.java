@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class DBAgent {
 	
 	private Statement stmt;
+	private Connection con;
 	public DBAgent(){
 		System.out.println("initialising dbagent");//for debug
 		try {
@@ -20,12 +21,11 @@ public class DBAgent {
 			e1.printStackTrace();
 		}
 		try {
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","root");
+			con = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","root");
 			stmt = con.createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
-	
 	}
 	
 	public Action getActionByID(int id){
@@ -84,7 +84,6 @@ public class DBAgent {
 	
 	public int getMonitorResultIDByMonitorID(int id){
 		System.out.println("gettingmonitorResultbyid from monitor id");//for debug
-		MonitorResult mr= new MonitorResult();
 		int monRes_id=0;
 		try {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM monitor_result WHERE monitor_id="+id);
@@ -100,6 +99,7 @@ public class DBAgent {
 	
 	
 	public int updateMonitorResult(MonitorResult mr){
+		System.out.println("update mr");
 		System.out.println("updating monitor result with value :"+mr.getId()+mr.getResultData());//for debug
 		int status = 0;
 		try {
@@ -107,7 +107,7 @@ public class DBAgent {
 		} catch (SQLException e) {e.printStackTrace();}
 		
 		//update into moniterResult table
-			
+			System.runFinalization();
 		return status;
 	}
 	
@@ -130,6 +130,16 @@ public class DBAgent {
 		
 		//load monitorList from database
 		return monitorList;
+	}
+	
+	public void close(){
+		try {
+			stmt.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }
