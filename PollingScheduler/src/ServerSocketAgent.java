@@ -8,8 +8,6 @@ import java.net.Socket;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import sun.org.mozilla.javascript.internal.json.JsonParser;
-
 public class ServerSocketAgent {
 	private Socket socket;
 	private final int enmsserviceport  = 4344;
