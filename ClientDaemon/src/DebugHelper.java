@@ -9,29 +9,30 @@ public class DebugHelper {
 		super();
 		this.className = className;
 		this.functionName = functionName;
-		this.debugMode = ((String)LocalIO.getConfig().get("debugMode")).equalsIgnoreCase("true");
+		String mode = (String)LocalIO.getConfig().get("debugMode");
+		this.debugMode = mode.equalsIgnoreCase("true");
 		this.fileDebugMode = false;
 	}
-	public void debugThisFile(boolean debug){
+	public void debugThisFunction(boolean debug){
 		this.fileDebugMode = debug;
 	}
 	public void header(){
 		if(debugMode && fileDebugMode){
-			System.out.println("\n===========");
-			System.out.println("\tHeader\t"+className+"\t->\t"+functionName);
-			System.out.println("===========");
+			System.out.println("\n============================================");
+			System.out.println("Started | "+className+" >> "+functionName);
+			System.out.println("============================================");
 		}
 	}
 	public void footer(){
 		if(debugMode && fileDebugMode){
-			System.out.println("\n===========");
-			System.out.println("\tFooter\t"+className+"\t->\t"+functionName);
-			System.out.println("===========");
+			System.out.println("\n============================================");
+			System.out.println("Terminated >> "+className+" -> "+functionName);
+			System.out.println("============================================");
 		}
 	}
-	public void print(String s){
+	public void println(String s){
 		if(debugMode && fileDebugMode){
-			System.out.println("\t>>"+s);
+			System.out.println(">> "+s);
 		}
 	}
 }

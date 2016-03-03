@@ -11,6 +11,7 @@ import org.json.simple.parser.ParseException;
 
 public class LocalIO {
 	public static JSONObject getConfig(){
+		
 		String homePath = System.getProperty("user.home");
 		File localDir = new File(homePath,".enmscd");
 		File confFile = new File(localDir,"conf.json");
@@ -21,7 +22,7 @@ public class LocalIO {
 		}
 		
 		if(confFile.exists()){
-			System.out.println("Config file exists");
+			//System.out.println("Config file exists");
 			JSONParser parser = new JSONParser();
 			JSONObject conf = null;
 			try {
@@ -36,11 +37,11 @@ public class LocalIO {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return conf;
-			
+	
+			return conf;			
 		}
 		else{			
-			System.out.println("Config file doesn't exists");
+			//System.out.println("Config file doesn't exists");
 			JSONObject conf = new JSONObject();
 			conf.put("localDir", localDir.getAbsolutePath());
 			conf.put("actionDir", new File(localDir,"actions").getAbsolutePath());
@@ -53,12 +54,17 @@ public class LocalIO {
 				System.out.println("Error in writing configuration file : "+e.getMessage());
 				e.printStackTrace();
 			}
-			
+		
 			return conf;
 		}
+		
 	}
 	
 	public static JSONObject getAction(String id){
+		DebugHelper dh = new DebugHelper("LocalIO", "getAction()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
 		File localDir = new File(LocalIO.getConfig().get("actionDir").toString());
 		File actionFile = new File(localDir,id+".json");
 		JSONParser parser = new JSONParser();
@@ -75,6 +81,8 @@ public class LocalIO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		dh.footer();
 		return action;
 	}
 }

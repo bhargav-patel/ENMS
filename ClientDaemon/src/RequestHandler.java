@@ -18,8 +18,12 @@ public class RequestHandler implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println(">>>>>>>>>>>");
-		System.out.println(socket);
+		DebugHelper dh = new DebugHelper("RequestHandler", "run()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
+		dh.println(">>>>>>>>>>>");
+		dh.println(socket.toString());
 		try {
 			DataInputStream datainputreader = new DataInputStream(socket.getInputStream());
 			action_id = datainputreader.readInt();
@@ -31,7 +35,7 @@ public class RequestHandler implements Runnable {
 		File actionDir = new File(LocalIO.getConfig().get("actionDir").toString());
 		File actionFile = new File(actionDir, action_id+".json");
 
-		System.out.println(actionFile.getName());
+		dh.println(actionFile.getName());
 		jsonResult.put("ResultasJSONString", executeFile(actionFile.getName()));
 
 		
@@ -40,13 +44,20 @@ public class RequestHandler implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		dh.footer();
 	}
 
 	private String executeFile(String fileName) {
+		DebugHelper dh = new DebugHelper("RequestHandler", "executeFile()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
 		JSONObject action = LocalIO.getAction(fileName.substring(0, fileName.indexOf('.')));
 		ActionExecution ae = new ActionExecution(action);
 		JSONObject result = ae.ExecuteAction(action);
 
+		dh.footer();
 		return result.toJSONString();
 	}
 

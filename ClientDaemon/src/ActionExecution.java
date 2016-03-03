@@ -8,10 +8,16 @@ public class ActionExecution {
 	private String runCommand;
 	
 	public ActionExecution(JSONObject action) {
-		System.out.println("inintialising actionExecutiton and getting filename and runCmd");//for debug
+		DebugHelper dh = new DebugHelper("ActionExecution", "Constructor");
+		dh.debugThisFunction(true);
+		dh.header();
+		
+		dh.println("inintialising actionExecutiton and getting filename and runCmd");//for debug
 		// TODO Auto-generated constructor stub
 		fileName = (String) action.get("Name");
 		runCommand = (String) action.get("runCommand");
+		
+		dh.footer();
 	}
 	
 	public String getFileName() {
@@ -27,28 +33,35 @@ public class ActionExecution {
 		this.runCommand = runCommand;
 	}
 	
-	public JSONObject ExecuteAction(JSONObject action){ 
-		System.out.println("ExecuteAction in actionExecution");
+	public JSONObject ExecuteAction(JSONObject action){
+		DebugHelper dh = new DebugHelper("ActionExecution", "Constructor");
+		dh.debugThisFunction(true);
+		dh.header();
+		
+		dh.println("ExecuteAction in actionExecution");
 		JSONObject result = new JSONObject();
 		if(fileName.equalsIgnoreCase("drives_info")){
 			String str = ActionImplementation.get_PC_Drivers_info();
 				result.put("result", str);
 		}
 		if(fileName.equalsIgnoreCase("ram_status")){
-			System.out.println("ram_status");
+			dh.println("ram_status");
 			String str = ActionImplementation.get_RAM_info();
-			System.out.println(str);
+			dh.println(str);
 			result.put("result", str);
 		}
 		if(fileName.equalsIgnoreCase("username")){
-			System.out.println("username");
+			dh.println("username");
 			String str = System.getProperty("user.name");
-			System.out.println(str);
+			dh.println(str);
 			result.put("result", str);
 		}
 		//ACTION Execution logic considering client OS.
-		System.out.println("Executing Action and result is:" + result.toString());//for debug
+		dh.println("Executing Action and result is:" + result.toString());//for debug
 
+		
+		dh.footer();
+		
 		return result;
 	}
 }
