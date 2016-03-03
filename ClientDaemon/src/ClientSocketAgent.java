@@ -51,7 +51,11 @@ public class ClientSocketAgent {
 	
 	
 	public void sendActionResponse(JSONObject action) throws IOException{
-		System.out.println("response sending....");//for debug
+		DebugHelper dh = new DebugHelper("ClientSocketAgent", "sendActionResponse()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
+		dh.println("response sending....");//for debug
 		try {
 			//send action execution result to server via socket
 			ObjectOutputStream oos = new ObjectOutputStream(new DataOutputStream(socket.getOutputStream()));

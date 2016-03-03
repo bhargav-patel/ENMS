@@ -47,7 +47,11 @@ public class ServerSocketAgent {
 	}
 	
 	public MonitorResult sendExecuteRequest(Monitor mon){
-		System.out.println("inside serversocketagent->sendexerequest");//debug
+		DebugHelper dh = new DebugHelper("ServerSocketAgent", "sendExecuteRequest()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
+		dh.println("inside serversocketagent->sendexerequest");//debug
 		MonitorResult monRes = null;
 		DBAgent dbagent = new DBAgent();
 		//get Monitor Result object with interaction with ClientSocketAgent
@@ -56,16 +60,16 @@ public class ServerSocketAgent {
 			DataOutputStream dataoutputwriter = new DataOutputStream(socket.getOutputStream());
 			dataoutputwriter.writeInt(mon.getAction_id());
 			//dataoutputwriter.close();
-			System.out.println(">>>>>>>>"+socket.isClosed()+socket.isConnected());
+			dh.println(">>>>>>>>"+socket.isClosed()+socket.isConnected());
 			DataInputStream datainputreader = new DataInputStream(socket.getInputStream());
 			ObjectInputStream ois = new ObjectInputStream(datainputreader);
-			System.out.println("socket created and got input stream");
+			dh.println("socket created and got input stream");
 			JSONObject action = (JSONObject)ois.readObject();
 			monRes = new MonitorResult();
 			monRes.setResultData(action.toJSONString());//TODO convert to JSON when convert MonitorResult.resultdata data type
-			System.out.println("before monitor id = "+monRes.getId());
+			dh.println("before monitor id = "+monRes.getId());
 			monRes.setId(dbagent.getMonitorResultIDByMonitorID(mon.getId()));
-			System.out.println("after monitor id = "+monRes.getId());
+			dh.println("after monitor id = "+monRes.getId());
 			monRes.setPollTime(new Timestamp(new Date().getTime()));
 			monRes.setMonitor_id(mon.getId());
 			//ois.close();
@@ -74,6 +78,8 @@ public class ServerSocketAgent {
 			e.printStackTrace();
 		}
 		dbagent.close();
+		
+		dh.footer();
 		return monRes;
 	}
 	

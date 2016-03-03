@@ -13,7 +13,11 @@ public class DBAgent {
 	private Statement stmt;
 	private Connection con;
 	public DBAgent(){
-		System.out.println("initialising dbagent");//for debug
+		DebugHelper dh = new DebugHelper("DBAgent", "Constructor");
+		dh.debugThisFunction(true);
+		dh.header();
+		
+		dh.println("initialising dbagent");//for debug
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e1) {
@@ -25,11 +29,17 @@ public class DBAgent {
 			stmt = con.createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}	
+		}
+		
+		dh.footer();
 	}
 	
 	public Action getActionByID(int id){
-		System.out.println("getting actionbyid");//for debug
+		DebugHelper dh = new DebugHelper("DBAgent", "getActionByID()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
+		dh.println("getting actionbyid");//for debug
 		Action action = new Action();
 		try {
 			ResultSet rs =stmt.executeQuery("SELECT * FROM action WHERE id="+id);
@@ -40,13 +50,19 @@ public class DBAgent {
 		} catch (SQLException e) {e.printStackTrace();}
 		
 		//set action parameters from action table from database
+		
+		dh.footer();
 		return action;
 	}
 	
 	public Device getDeviceByID(int id){
+		DebugHelper dh = new DebugHelper("DBAgent", "getDeviceByID()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
 		Device device = new Device();
 		try {
-			System.out.println("getting device id");//for debug
+			dh.println("getting device id");//for debug
 			ResultSet rs = stmt.executeQuery("SELECT * FROM device WHERE id="+id);
 			rs.next();
 			device.setId(rs.getInt(1));
@@ -59,11 +75,17 @@ public class DBAgent {
 		} catch (SQLException e) {e.printStackTrace();}
 		
 		//set device parameters from device table from database
+		
+		dh.footer();
 		return device;
 	}
 	
 	public Monitor getMonitorByID(int id){
-		System.out.println("getting monitorbyid");//for debug
+		DebugHelper dh = new DebugHelper("DBAgent", "getMonitorByID()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
+		dh.println("getting monitorbyid");//for debug
 		Monitor monitor= new Monitor();
 		try {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM monitor WHERE id="+id);
@@ -78,12 +100,18 @@ public class DBAgent {
 		} catch (SQLException e) {e.printStackTrace();}
 		
 		//set monitor parameters from monitor table from database
+		
+		dh.footer();
 		return monitor;
 	}
 	
 	
 	public int getMonitorResultIDByMonitorID(int id){
-		System.out.println("gettingmonitorResultbyid from monitor id");//for debug
+		DebugHelper dh = new DebugHelper("DBAgent", "getMonitorResultIDByMonitorID()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
+		dh.println("gettingmonitorResultbyid from monitor id");//for debug
 		int monRes_id=0;
 		try {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM monitor_result WHERE monitor_id="+id);
@@ -93,14 +121,20 @@ public class DBAgent {
 		} catch (SQLException e) {e.printStackTrace();}
 		
 		//gets monitor_resultID from monitor ID
+		
+		dh.footer();
 		return monRes_id;
 	}
 	
 	
 	
 	public int updateMonitorResult(MonitorResult mr){
-		System.out.println("update mr");
-		System.out.println("updating monitor result with value :"+mr.getId()+mr.getResultData());//for debug
+		DebugHelper dh = new DebugHelper("DBAgent", "updateMonitorResult()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
+		dh.println("update mr");
+		dh.println("updating monitor result with value :"+mr.getId()+mr.getResultData());//for debug
 		int status = 0;
 		try {
 			status = stmt.executeUpdate("UPDATE `monitor_result` SET `Poll_Time`='"+mr.getPollTime()+"', `resultData`='"+mr.getResultData()+"', `monitor_id`='"+mr.getMonitor_id()+"' WHERE `id`='"+mr.getId()+"';");
@@ -108,11 +142,17 @@ public class DBAgent {
 		
 		//update into moniterResult table
 			System.runFinalization();
+		
+		dh.footer();	
 		return status;
 	}
 	
 	public ArrayList<Monitor> getMonitorList(){
-		System.out.println("getting monitor list");//for debug
+		DebugHelper dh = new DebugHelper("DBAgent", "getMonitorList()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
+		dh.println("getting monitor list");//for debug
 		ArrayList<Monitor> monitorList = new ArrayList<Monitor>();
 		try {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM monitor");
@@ -129,6 +169,8 @@ public class DBAgent {
 		} catch (SQLException e) {e.printStackTrace();}
 		
 		//load monitorList from database
+		
+		dh.footer();
 		return monitorList;
 	}
 	

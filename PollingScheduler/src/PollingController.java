@@ -15,6 +15,10 @@ public class PollingController {
 	}
 	
 	public int startPolling(){
+		DebugHelper dh = new DebugHelper("PollingController", "startPolling()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
 		//TODO schedule and start monitors logic
 		for (final Monitor monitor : monitorList) {//Runs for each monitors
 			int count =0 ;//for debug
@@ -50,6 +54,8 @@ public class PollingController {
 			t.start();
 			System.out.println("thread="+ count);
 		}//foreach ends here
+		
+		dh.footer();
 		return 0;
 	}
 
