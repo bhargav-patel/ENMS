@@ -40,6 +40,12 @@ public class ActionExecution {
 			System.out.println(str);
 			result.put("result", str);
 		}
+		if(fileName.equalsIgnoreCase("username")){
+			System.out.println("username");
+			String str = System.getProperty("user.name");
+			System.out.println(str);
+			result.put("result", str);
+		}
 		//ACTION Execution logic considering client OS.
 		System.out.println("Executing Action and result is:" + result.toString());//for debug
 

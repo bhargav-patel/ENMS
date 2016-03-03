@@ -21,7 +21,7 @@ public class DBAgent {
 			e1.printStackTrace();
 		}
 		try {
-			con = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","root");
+			con = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","temppass");
 			stmt = con.createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();

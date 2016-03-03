@@ -10,10 +10,8 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import org.json.simple.JSONObject;
-<<<<<<< HEAD
 import org.json.simple.parser.JSONParser;
-=======
->>>>>>> a9f8dd0d76fa193e6129f9b7d0481cf05c4439e1
+
 
 public class ServerSocketAgent {
 	private Socket socket;
@@ -55,6 +53,10 @@ public class ServerSocketAgent {
 		//get Monitor Result object with interaction with ClientSocketAgent
 		try {
 			socket = new Socket(dbagent.getDeviceByID(mon.getDevice_id()).getIp(),enmsserviceport);//gets ip address of respective monitor from it's device id
+			DataOutputStream dataoutputwriter = new DataOutputStream(socket.getOutputStream());
+			dataoutputwriter.writeInt(mon.getAction_id());
+			//dataoutputwriter.close();
+			System.out.println(">>>>>>>>"+socket.isClosed()+socket.isConnected());
 			DataInputStream datainputreader = new DataInputStream(socket.getInputStream());
 			ObjectInputStream ois = new ObjectInputStream(datainputreader);
 			System.out.println("socket created and got input stream");
@@ -66,8 +68,8 @@ public class ServerSocketAgent {
 			System.out.println("after monitor id = "+monRes.getId());
 			monRes.setPollTime(new Timestamp(new Date().getTime()));
 			monRes.setMonitor_id(mon.getId());
-			ois.close();
-			datainputreader.close();
+			//ois.close();
+			//datainputreader.close();
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
