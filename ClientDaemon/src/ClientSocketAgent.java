@@ -11,11 +11,19 @@ import org.json.simple.JSONObject;
 
 public class ClientSocketAgent {
 	Socket socket;
+	DataInputStream dis;
+	DataOutputStream dos;
 	
 	public ClientSocketAgent(Socket socket) {
 		super();
 		this.socket = socket;
-		System.runFinalizersOnExit(true);
+		try {
+			this.dis = new DataInputStream(socket.getInputStream());
+			this.dos = new DataOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void getFile(){
 		//receive file from ServerSocketAgent
@@ -24,8 +32,7 @@ public class ClientSocketAgent {
 		FileOutputStream fos;
 		
 		try {			
-			DataInputStream reader = new DataInputStream(socket.getInputStream());
-			filename = reader.readUTF();
+			filename = dis.readUTF();
 			
 			File localDir = new File(System.getProperty("user.home"),".enmscd");
 			File actiondir = new File(localDir,"actions");
@@ -38,7 +45,7 @@ public class ClientSocketAgent {
 				f.setWritable(true);
 			}
 						
-			while((c = reader.read())>0){
+			while((c = dis.read())>0){
 				fos.write(c);
 			}
 			
@@ -49,6 +56,16 @@ public class ClientSocketAgent {
 		}
 	}
 	
+	public int readActionId(){
+		int action_id=-1;
+		try {
+			action_id = dis.readInt();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return action_id;
+	}
 	
 	public void sendActionResponse(JSONObject action) throws IOException{
 		DebugHelper dh = new DebugHelper("ClientSocketAgent", "sendActionResponse()");
@@ -58,7 +75,7 @@ public class ClientSocketAgent {
 		dh.println("response sending....");//for debug
 		try {
 			//send action execution result to server via socket
-			ObjectOutputStream oos = new ObjectOutputStream(new DataOutputStream(socket.getOutputStream()));
+			ObjectOutputStream oos = new ObjectOutputStream(dos);
 			oos.writeObject(action);
 			oos.flush();
 			oos.close();
@@ -67,7 +84,9 @@ public class ClientSocketAgent {
 		}
 	}
 	
-	protected void finalize() throws Throwable{
-			socket.close();
+	public void close() throws IOException{
+		dis.close();
+		dos.close();
+		socket.close();
 	}
 }

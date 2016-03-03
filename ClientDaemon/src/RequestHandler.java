@@ -40,7 +40,9 @@ public class RequestHandler implements Runnable {
 
 		
 		try {
-			new ClientSocketAgent(socket).sendActionResponse(jsonResult);
+			ClientSocketAgent csa = new ClientSocketAgent(socket);
+			csa.sendActionResponse(jsonResult);
+			csa.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
