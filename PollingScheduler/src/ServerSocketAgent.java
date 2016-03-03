@@ -15,14 +15,27 @@ import org.json.simple.parser.JSONParser;
 
 public class ServerSocketAgent {
 	private Socket socket;
+	private DataInputStream dis;
+	private DataOutputStream dos;
 	private final int enmsserviceport  = 55155;
 	
+	public ServerSocketAgent(Device dev) {
+		super();
+		try {
+			this.socket = new Socket(dev.getIp(),enmsserviceport);
+			this.dis = new DataInputStream(socket.getInputStream());
+			this.dos = new DataOutputStream(socket.getOutputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public int uploadFile(Monitor mon, String fileName, File path){
 		try {
 			File file = new File(path,fileName);
 			FileInputStream fis = new FileInputStream(file);
-			socket = new Socket(new DBAgent().getDeviceByID(mon.getDevice_id()).getIp(),enmsserviceport);
-			DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
+			
 			dos.writeUTF(fileName);
 			int c;
 			
@@ -56,13 +69,10 @@ public class ServerSocketAgent {
 		DBAgent dbagent = new DBAgent();
 		//get Monitor Result object with interaction with ClientSocketAgent
 		try {
-			socket = new Socket(dbagent.getDeviceByID(mon.getDevice_id()).getIp(),enmsserviceport);//gets ip address of respective monitor from it's device id
-			DataOutputStream dataoutputwriter = new DataOutputStream(socket.getOutputStream());
-			dataoutputwriter.writeInt(mon.getAction_id());
+			dos.writeInt(mon.getAction_id());
 			//dataoutputwriter.close();
 			dh.println(">>>>>>>>"+socket.isClosed()+socket.isConnected());
-			DataInputStream datainputreader = new DataInputStream(socket.getInputStream());
-			ObjectInputStream ois = new ObjectInputStream(datainputreader);
+			ObjectInputStream ois = new ObjectInputStream(dis);
 			dh.println("socket created and got input stream");
 			JSONObject action = (JSONObject)ois.readObject();
 			monRes = new MonitorResult();
@@ -72,7 +82,7 @@ public class ServerSocketAgent {
 			dh.println("after monitor id = "+monRes.getId());
 			monRes.setPollTime(new Timestamp(new Date().getTime()));
 			monRes.setMonitor_id(mon.getId());
-			//ois.close();
+			ois.close();
 			//datainputreader.close();
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
@@ -85,6 +95,8 @@ public class ServerSocketAgent {
 	
 	public void close(){
 		try {
+			dis.close();
+			dos.close();
 			socket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

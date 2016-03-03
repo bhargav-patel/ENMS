@@ -39,7 +39,7 @@ public class PollingController {
 				
 				@Override
 				public int sendRequest() {
-					ServerSocketAgent serversocketagent = new ServerSocketAgent();
+					ServerSocketAgent serversocketagent = new ServerSocketAgent(new DBAgent().getDeviceByID(monitor.getDevice_id()));
 					System.out.println("PollingController->sendRequest to :"+monitor.getId()+monitor.getName());
 					MonitorResult mr = serversocketagent.sendExecuteRequest(monitor);
 					serversocketagent.close();
