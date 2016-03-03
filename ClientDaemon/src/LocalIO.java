@@ -44,6 +44,7 @@ public class LocalIO {
 			JSONObject conf = new JSONObject();
 			conf.put("localDir", localDir.getAbsolutePath());
 			conf.put("actionDir", new File(localDir,"actions").getAbsolutePath());
+			conf.put("debugMode", "false");
 			
 			try (FileWriter confWriter = new FileWriter(confFile)) {
 				confFile.createNewFile();
