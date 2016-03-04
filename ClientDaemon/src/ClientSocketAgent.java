@@ -67,7 +67,7 @@ public class ClientSocketAgent {
 		return action_id;
 	}
 	
-	public void sendActionResponse(JSONObject action) throws IOException{
+	public void sendActionResponse(JSONObject action){
 		DebugHelper dh = new DebugHelper("ClientSocketAgent", "sendActionResponse()");
 		dh.debugThisFunction(true);
 		dh.header();
@@ -84,9 +84,14 @@ public class ClientSocketAgent {
 		}
 	}
 	
-	public void close() throws IOException{
-		dis.close();
-		dos.close();
-		socket.close();
+	public void close(){
+		try {
+			dis.close();
+			dos.close();
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

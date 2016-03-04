@@ -6,6 +6,7 @@ public class DebugHelper {
 	private String functionName;
 	static int level;
 	private String spacingUnit;
+	private String threadInfo;
 	
 	public DebugHelper(String className, String functionName) {
 		super();
@@ -15,12 +16,13 @@ public class DebugHelper {
 		String mode = (String)LocalIO.getConfig().get("debugMode");
 		this.debugMode = mode.equalsIgnoreCase("true");
 		this.fileDebugMode = false;
+		threadInfo = Thread.currentThread().getId()+":"+Thread.currentThread().getName();
 	}
 	public void debugThisFunction(boolean debug){
 		this.fileDebugMode = debug;
 	}
 	public void header(){
-		String spacing = "";
+		String spacing = threadInfo;
 		for(int i=0;i<level;i++)
 			spacing+=spacingUnit;
 		if(debugMode && fileDebugMode){
@@ -31,7 +33,7 @@ public class DebugHelper {
 		level++;
 	}
 	public void footer(){
-		String spacing = "";
+		String spacing = threadInfo;
 		for(int i=0;i<level;i++)
 			spacing+=spacingUnit;
 		if(debugMode && fileDebugMode){
@@ -42,7 +44,7 @@ public class DebugHelper {
 		level--;
 	}
 	public void println(String s){
-		String spacing = "";
+		String spacing = threadInfo;
 		for(int i=0;i<level;i++)
 			spacing+=spacingUnit;
 		if(debugMode && fileDebugMode){

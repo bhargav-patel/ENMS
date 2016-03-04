@@ -21,17 +21,21 @@ public class PollingController {
 		
 		//TODO schedule and start monitors logic
 		for (final Monitor monitor : monitorList) {//Runs for each monitors
-			int count =0 ;//for debug
+			int count =0 ;count++;//for debug
 			Thread t = new Thread(new ActionRequest() {//created thread for each monitor
 				@Override
 				public void run() {
 					// TODO Schedule timer for time equal to PollingDuration of monitor in seconds
-					System.out.println("thread->run for startpolling");
+					Thread.currentThread().setName(monitor.getId()+"|"+monitor.getName());
+					
+					dh.println("THREAD STARTED "+Thread.currentThread().getId()+":"+monitor.getId()+"|"+monitor.getName());
+					dh.println(monitorList.size()+"");
+					
 					Timer timer = new Timer();
 					timer.schedule(new TimerTask() {
 						@Override
 						public void run() {
-							System.out.println("thread->run;-sending request");
+							dh.println("thread->run;-sending request");
 							sendRequest();//on completion of timer sends execute request
 						}
 					}, 0,monitor.getPollingDuration()*1000);
@@ -40,19 +44,19 @@ public class PollingController {
 				@Override
 				public int sendRequest() {
 					ServerSocketAgent serversocketagent = new ServerSocketAgent(new DBAgent().getDeviceByID(monitor.getDevice_id()));
-					System.out.println("PollingController->sendRequest to :"+monitor.getId()+monitor.getName());
+					dh.println("PollingController->sendRequest to :"+monitor.getId()+monitor.getName());
 					MonitorResult mr = serversocketagent.sendExecuteRequest(monitor);
 					serversocketagent.close();
-					System.out.println("Recieved monitor result and now updating monitorResult to DB");
+					dh.println("Recieved monitor result and now updating monitorResult to DB");
 					DBAgent dba = new DBAgent();
 					dba.updateMonitorResult(mr);
 					dba.close();
-					System.out.println("request sent");
+					dh.println("request completed");
 					return 0;
 				}
 			});
 			t.start();
-			System.out.println("thread="+ count);
+			dh.println("thread="+ count);
 		}//foreach ends here
 		
 		dh.footer();

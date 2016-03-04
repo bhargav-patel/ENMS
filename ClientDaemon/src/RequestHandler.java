@@ -8,12 +8,12 @@ import org.json.simple.JSONObject;
 
 
 public class RequestHandler implements Runnable {
-	Socket socket;
+	ClientSocketAgent csa;
 	int action_id;
 	
 	public RequestHandler(Socket socket) {
 		super();
-		this.socket = socket;
+		this.csa = new ClientSocketAgent(socket);
 	}
 
 	@Override
@@ -21,16 +21,9 @@ public class RequestHandler implements Runnable {
 		DebugHelper dh = new DebugHelper("RequestHandler", "run()");
 		dh.debugThisFunction(true);
 		dh.header();
+				
+		action_id = csa.readActionId();
 		
-		dh.println(">>>>>>>>>>>");
-		dh.println(socket.toString());
-		try {
-			DataInputStream datainputreader = new DataInputStream(socket.getInputStream());
-			action_id = datainputreader.readInt();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		JSONObject jsonResult = new JSONObject();
 		File actionDir = new File(LocalIO.getConfig().get("actionDir").toString());
 		File actionFile = new File(actionDir, action_id+".json");
@@ -38,14 +31,8 @@ public class RequestHandler implements Runnable {
 		dh.println(actionFile.getName());
 		jsonResult.put("ResultasJSONString", executeFile(actionFile.getName()));
 
-		
-		try {
-			ClientSocketAgent csa = new ClientSocketAgent(socket);
-			csa.sendActionResponse(jsonResult);
-			csa.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		csa.sendActionResponse(jsonResult);
+		csa.close();
 		
 		dh.footer();
 	}

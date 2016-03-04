@@ -21,7 +21,13 @@ public class ServerSocketAgent {
 	
 	public ServerSocketAgent(Device dev) {
 		super();
+		
+		DebugHelper dh = new DebugHelper("ServerSocketAgent", "Constructor");
+		dh.debugThisFunction(true);
+		dh.header();
+		
 		try {
+			dh.println(dev.getIp().toString());
 			this.socket = new Socket(dev.getIp(),enmsserviceport);
 			this.dis = new DataInputStream(socket.getInputStream());
 			this.dos = new DataOutputStream(socket.getOutputStream());
@@ -29,6 +35,8 @@ public class ServerSocketAgent {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		dh.footer();
 	}
 
 	public int uploadFile(Monitor mon, String fileName, File path){
