@@ -126,7 +126,14 @@ public class DBAgent {
 		return monRes_id;
 	}
 	
-	
+	public int insertMonitorResult(MonitorResult mr){
+		int status = 0;
+		try {
+			status = stmt.executeUpdate("INSERT INTO `monitor_result` (`Poll_Time`, `resultData`, `monitor_id`) VALUES ('"+mr.getPollTime()+"', '\""+mr.getResultData()+"\"', '"+mr.getMonitor_id()+"');");
+		} catch (SQLException e) {e.printStackTrace();}
+		
+		return status;
+	}
 	
 	public int updateMonitorResult(MonitorResult mr){
 		DebugHelper dh = new DebugHelper("DBAgent", "updateMonitorResult()");
@@ -136,12 +143,12 @@ public class DBAgent {
 		dh.println("update mr");
 		dh.println("updating monitor result with value :"+mr.getId()+mr.getResultData());//for debug
 		int status = 0;
+		
 		try {
 			status = stmt.executeUpdate("UPDATE `monitor_result` SET `Poll_Time`='"+mr.getPollTime()+"', `resultData`='"+mr.getResultData()+"', `monitor_id`='"+mr.getMonitor_id()+"' WHERE `id`='"+mr.getId()+"';");
-		} catch (SQLException e) {e.printStackTrace();}
+		} catch (SQLException e) {System.out.println("MonitorResult entry not found so adding new value");}
 		
-		//update into moniterResult table
-			System.runFinalization();
+		if(status==0)insertMonitorResult(mr);
 		
 		dh.footer();	
 		return status;
