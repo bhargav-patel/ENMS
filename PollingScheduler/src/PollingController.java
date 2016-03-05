@@ -15,7 +15,7 @@ public class PollingController {
 	}
 	
 	public int startPolling(){
-		DebugHelper dh = new DebugHelper("PollingController", "startPolling()");
+		final DebugHelper dh = new DebugHelper("PollingController", "startPolling()");
 		dh.debugThisFunction(true);
 		dh.header();
 		
@@ -50,6 +50,7 @@ public class PollingController {
 					dh.println("Recieved monitor result and now updating monitorResult to DB");
 					DBAgent dba = new DBAgent();
 					dba.updateMonitorResult(mr);
+					dba.updateLastPollByMonitorID(monitor);
 					dba.close();
 					dh.println("request completed");
 					return 0;

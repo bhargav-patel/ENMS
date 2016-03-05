@@ -41,14 +41,12 @@ public class ActionExecution {
 		dh.println("ExecuteAction in actionExecution");
 		JSONObject result = new JSONObject();
 		if(fileName.equalsIgnoreCase("drives_info")){
-			String str = ActionImplementation.get_PC_Drivers_info();
-				result.put("result", str);
+			result = ActionImplementation.get_PC_Drivers_info();
 		}
 		if(fileName.equalsIgnoreCase("ram_status")){
 			dh.println("ram_status");
-			String str = ActionImplementation.get_RAM_info();
-			dh.println(str);
-			result.put("result", str);
+			result = ActionImplementation.get_RAM_info();
+			dh.println(result.toJSONString());
 		}
 		if(fileName.equalsIgnoreCase("username")){
 			dh.println("username");
