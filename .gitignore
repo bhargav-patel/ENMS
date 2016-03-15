@@ -25,4 +25,6 @@ local.properties
 *.launch
 
 #bower
-WebPortal/static/js/bower_components/
+WebPortal/WebContent/static/js/bower_components/
+
+Servers/
