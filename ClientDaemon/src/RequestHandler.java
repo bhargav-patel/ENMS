@@ -29,7 +29,7 @@ public class RequestHandler implements Runnable {
 		File actionFile = new File(actionDir, action_id+".json");
 
 		dh.println(actionFile.getName());
-		jsonResult.put("ResultasJSONString", executeFile(actionFile.getName()));
+		jsonResult = executeFile(actionFile.getName());
 
 		csa.sendActionResponse(jsonResult);
 		csa.close();
@@ -37,7 +37,7 @@ public class RequestHandler implements Runnable {
 		dh.footer();
 	}
 
-	private String executeFile(String fileName) {
+	private JSONObject executeFile(String fileName) {
 		DebugHelper dh = new DebugHelper("RequestHandler", "executeFile()");
 		dh.debugThisFunction(true);
 		dh.header();
@@ -47,7 +47,7 @@ public class RequestHandler implements Runnable {
 		JSONObject result = ae.ExecuteAction(action);
 
 		dh.footer();
-		return result.toJSONString();
+		return result;
 	}
 
 }

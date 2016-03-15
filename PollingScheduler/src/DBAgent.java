@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class DBAgent {
@@ -25,7 +27,7 @@ public class DBAgent {
 			e1.printStackTrace();
 		}
 		try {
-			con = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","temppass");
+			con = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","root");
 			stmt = con.createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -141,7 +143,7 @@ public class DBAgent {
 		dh.header();
 		
 		dh.println("update mr");
-		dh.println("updating monitor result with value :"+mr.getId()+mr.getResultData());//for debug
+//		dh.println("updating monitor result with value :"+mr.getId()+mr.getResultData());//for debug
 		int status = 0;
 		
 		try {
@@ -163,8 +165,9 @@ public class DBAgent {
 		ArrayList<Monitor> monitorList = new ArrayList<Monitor>();
 		try {
 			ResultSet rs = stmt.executeQuery("SELECT * FROM monitor");
-			Monitor m = new Monitor();
+			Monitor m = null;
 			while(rs.next()){
+				m = new Monitor();
 				m.setId(rs.getInt(1));
 				m.setName(rs.getString(2));
 				m.setPollingDuration(rs.getInt(3));
@@ -179,6 +182,23 @@ public class DBAgent {
 		
 		dh.footer();
 		return monitorList;
+	}
+	
+	public int insertMonitorResult(MonitorResult mr){
+		int status = 0;
+		try {
+			status = stmt.executeUpdate("INSERT INTO `monitor_result` (`Poll_Time`, `resultData`, `monitor_id`) VALUES ('"+mr.getPollTime()+"', '\""+mr.getResultData()+"\"', '"+mr.getMonitor_id()+"');");
+		} catch (SQLException e) {e.printStackTrace();}
+		
+		//update into moniterResult table
+			System.runFinalization();
+		return status;
+	}
+	
+	public void updateLastPollByMonitorID(Monitor mon){
+		try {
+			stmt.executeUpdate("UPDATE `monitor` SET `lastPoll`='"+new Timestamp(new Date().getTime())+"' WHERE `id`='"+mon.getId()+"';");
+		} catch (SQLException e) {e.printStackTrace();}
 	}
 	
 	public void close(){
