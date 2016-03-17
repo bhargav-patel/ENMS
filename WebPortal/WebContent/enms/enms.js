@@ -2,29 +2,18 @@
 	'use strict';
 
 	//Define an angular module for our app
-	var enmsApp = angular.module('enms', ['ngRoute']);
+	var enmsApp = angular.module('enms', ['ngRoute','enms.home']);
 	 
 	enmsApp.config(['$routeProvider',
 	  function($routeProvider) {
 	    $routeProvider.
-	      when('/main', {
-	        templateUrl: 'enms/main/main.html',
-	        controller: 'homeController'
-	    }).when('/test', {
+	    	when('/test', {
 	        templateUrl: 'enms/test/test.html',
 	        controller: 'testController'
 	    }).
 	      otherwise({
-	        redirectTo: '/main'
+	        redirectTo: '/home'
 	      });
-	}]);
-
-	enmsApp.controller('homeController', ['$scope',function($scope) {
-		
-	}]);
-	
-	enmsApp.controller('testController', ['$scope',function($scope) {
-			
 	}]);
 
 })();
