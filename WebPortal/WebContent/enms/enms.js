@@ -8,10 +8,10 @@
 	  function($routeProvider) {
 	    $routeProvider.
 	      when('/main', {
-	        templateUrl: 'static/templates/main.html',
+	        templateUrl: 'enms/main/main.html',
 	        controller: 'homeController'
 	    }).when('/test', {
-	        templateUrl: 'static/templates/test.html',
+	        templateUrl: 'enms/test/test.html',
 	        controller: 'testController'
 	    }).
 	      otherwise({
