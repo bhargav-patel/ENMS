@@ -26,6 +26,8 @@
 <script src="enms/lib/bower_components/angular-route/angular-route.min.js"></script>
 <script src="enms/enms.js"></script>
 <script src="enms/home/home.js"></script>
+<script src="enms/test/test.js"></script>
+<script src="enms/services/dataService.js"></script>
 <script>
   $.material.init();
 </script>

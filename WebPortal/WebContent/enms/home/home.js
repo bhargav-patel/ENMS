@@ -10,8 +10,8 @@
 	  });
 	}])
 	
-	.controller('homeCtrl', ['$scope',function($scope) {
-		
+	.controller('homeCtrl', ['$scope','Data',function($scope,Data) {
+		$scope.data = Data.data;
 	}]);
 	
 })();

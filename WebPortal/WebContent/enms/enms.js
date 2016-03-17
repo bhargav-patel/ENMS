@@ -2,16 +2,12 @@
 	'use strict';
 
 	//Define an angular module for our app
-	var enmsApp = angular.module('enms', ['ngRoute','enms.home']);
+	var enmsApp = angular.module('enms', ['ngRoute','enms.home','enms.test','enms.dataService']);
 	 
 	enmsApp.config(['$routeProvider',
 	  function($routeProvider) {
 	    $routeProvider.
-	    	when('/test', {
-	        templateUrl: 'enms/test/test.html',
-	        controller: 'testController'
-	    }).
-	      otherwise({
+	    	otherwise({
 	        redirectTo: '/home'
 	      });
 	}]);
