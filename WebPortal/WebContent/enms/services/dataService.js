@@ -4,7 +4,12 @@
 	angular.module('enms.dataService', ['ngRoute'])
 	
 	.service('Data',function($http){
-		this.data =  'Hi';
+		this.baseUrl = '/';
+		
+		this.getResentLogs = function(){
+			return $http.post('/resentLogs.json');
+		}
+		
 	});
 	
 })();

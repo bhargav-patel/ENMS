@@ -1,1 +1,92 @@
-Main Page
+<div class="row">
+	<div class="col-md-6">
+	<div class="panel panel-primary">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-md-2">	
+						<a class="btn btn-success">{$ que.quiz_name $}</a>
+					</div>
+					<div class="col-md-10">
+						<h2 class="text-center">Level {$ que.level $} ( {$ que.points $} Points )</h2>
+					</div>
+				</div>
+			</div>
+			<div class="panel-body">
+				
+				<br />
+				<div class="row">
+					<img ng-src="{$que.image || '/static/img/noimg.png'$}" class="col-md-4 img-responsive" data-toggle="modal" data-target="#fullImage" />
+					<div class="col-md-8">
+						<p class="lead" ng-bind="que.question">Loading..</p>
+						<a ng-show="llHint" class="btn btn-info btn-xs" data-toggle="modal" data-target="#hint">Hint</a>
+						<a ng-show="llLink" class="btn btn-warning btn-xs" href="{$llLink$}" target="_blank">Link</a>
+					</div>
+				</div>
+				<br />
+				<h1></h1>
+				<br />
+					<form class="form-horizontal" ng-submit="answer && checkAnswer()">
+						<div class="form-group" style="font-size:20px;">
+							<div class="row">
+								<label class="col-sm-2 control-label">Answer</label>
+								<div class="col-sm-6">
+									<input type="text" class="form-control" placeholder="Enter your answer Here." ng-model="answer">
+								</div>
+								<div class="col-sm-1">
+									<button type="submit" class="btn btn-primary mdi-content-send"></button>
+								</div>
+								<div class="col-sm-1 col-sm-offset-1">
+									<img ng-show="loading" src="{% static 'img/load.gif' %}">
+								</div>
+							</div>
+						</div>
+					</form>
+				<div class="modal fade" id="fullImage">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h4 class="modal-title">Level {$ que.level $} Image</h4>
+							</div>
+							<div class="modal-body">
+								<img ng-src="{$que.image || '/static/img/noimg.png'$}" class="img-responsive" />
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal fade" id="confirm">
+					<div class="modal-dialog btn-raised">
+						<div class="panel panel-success">
+							<div class="panel-heading text-center">
+								<h3>Confirm</h3>
+							</div>
+							<div class="panel-body">
+								<h4>You can use this lifeline only once.</h4>
+								<h4>{$llDesc$}</h4><br />
+								<button ng-click="useLifeline()" data-dismiss="modal" class="btn btn-success btn-raised">Confirm</button>
+								<button data-dismiss="modal" class="btn btn-warning btn-raised">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal fade" id="hint">
+					<div class="modal-dialog btn-raised">
+						<div class="panel panel-success">
+							<div class="panel-heading text-center">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h3>Hint</h3>
+							</div>
+							<div class="panel-body text-center">
+								<h4>{$llHint$}</h4>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+	</div>
+	<div class="col-md-6"></div>
+	<div class="col-md-6"></div>
+	<div class="col-md-6"></div>
+</div>

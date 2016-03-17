@@ -11,7 +11,15 @@
 	}])
 	
 	.controller('testCtrl', ['$scope','Data',function($scope,Data) {
-		
+		$scope.updateLogs = function(){
+			Data.getResentLogs()
+			.success(function(){
+				console.log('SUCCESS');
+			})
+			.error(function(){
+				console.log('ERROR');
+			});
+		}
 	}]);
 	
 })();
