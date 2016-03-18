@@ -10,8 +10,20 @@
 	  });
 	}])
 	
-	.controller('homeCtrl', ['$scope','Data',function($scope,Data) {
-		$scope.data = Data.data;
+	.controller('homeCtrl', ['$scope','Data','$interval',function($scope,Data,$interval) {
+		$scope.getResentMonitorResults = function(howMany){
+			Data.getRecentMonitorResults(howMany)
+			.success(function(data){
+				$scope.recentMonitorLogs = data;
+				console.log(data);
+			})
+			.error(function(){
+				console.log("ERROR : homeCtrl > getRecentMonitorResults");
+			});
+		}
+		$interval(function(){
+			$scope.getResentMonitorResults(5);
+		},3000);
 	}]);
 	
 })();

@@ -12,7 +12,7 @@
 	
 	.controller('testCtrl', ['$scope','Data',function($scope,Data) {
 		$scope.updateLogs = function(){
-			Data.getResentLogs()
+			Data.getResentMonitorResults()
 			.success(function(){
 				console.log('SUCCESS');
 			})
