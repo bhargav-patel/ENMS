@@ -2,7 +2,7 @@
 	'use strict';
 
 	//Define an angular module for our app
-	var enmsApp = angular.module('enms', ['ngRoute','enms.home','enms.test','enms.dataService','enms.monitor']);
+	var enmsApp = angular.module('enms', ['ngRoute','enms.home','enms.test','enms.dataService','enms.monitor',,'enms.device']);
 	 
 	enmsApp.config(['$routeProvider',
 	  function($routeProvider) {

@@ -1,0 +1,42 @@
+<div class="col-md-8 col-md-offset-2">
+	<a href="#/device" class="btn btn-raised btn-primary">Back to Device List</a>
+	<div ng-repeat="alert in alerts" ng-show="alert.show">
+		<div class="alert alert-dismissible alert-{{alert.type}}">
+		  <button type="button" class="close" data-dismiss="alert">×</button>
+		  <strong>{{alert.msg}}</strong>
+		</div>	
+	</div>
+	<div class="well bs-component">
+		<form class="form-horizontal" ng-submit="submit()">
+		  <fieldset>
+		    <legend>Add Device</legend>
+		    <div class="form-group">
+		      <label for="device_name" class="col-md-2 control-label">Device Name</label>
+		
+		      <div class="col-md-10">
+		        <input type="text" class="form-control" id="device_name" placeholder="Enter Device Name" ng-model="device_name">
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <label for="ip" class="col-md-2 control-label">IP Address</label>
+		
+		      <div class="col-md-10">
+		        <input type="text" class="form-control" id="ip" placeholder="Enter IP of device" ng-model="ip">
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <label for="deviceGroup" class="col-md-2 control-label">Select Device Group</label>
+		
+		      <div class="col-md-10">
+		        <select id="deviceGroup" class="form-control" ng-model="deviceGroup" ng-options='d.id as d.name for d in deviceGroups'></select>
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <div class="col-md-10 col-md-offset-2">
+		        <button type="submit" class="btn btn-primary">Submit</button>
+		      </div>
+		    </div>
+		  </fieldset>
+		</form>
+	</div>
+</div>

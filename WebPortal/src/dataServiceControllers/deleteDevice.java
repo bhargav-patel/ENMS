@@ -3,7 +3,6 @@ package dataServiceControllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;
@@ -12,20 +11,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
- * Servlet implementation class getDeviceList
+ * Servlet implementation class deleteDevice
  */
-@WebServlet("/getDeviceList")
-public class getDeviceList extends HttpServlet {
+@WebServlet("/deleteDevice")
+public class deleteDevice extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public getDeviceList() {
+    public deleteDevice() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,32 +33,6 @@ public class getDeviceList extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		JSONArray result = new JSONArray();
-		response.setContentType("text/json");
-		
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","temppass");
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM device");
-			
-			while (rs.next()) {
-				JSONObject json = new JSONObject();
-				json.put("id", rs.getInt(1));
-				json.put("name", rs.getString(2));
-				json.put("ip", rs.getString(3));
-				json.put("deviceGroup_id", rs.getInt(4));
-				
-				result.add(json);
-			}
-			
-			response.getWriter().println(result);
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			response.getWriter().println("Invalid Request or Server Error.");
-			e.printStackTrace();
-		}
 	}
 
 	/**
@@ -68,6 +40,29 @@ public class getDeviceList extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		JSONObject json = new JSONObject();
+		response.setContentType("text/json");
+		
+		try {
+			int device_id = Integer.parseInt(request.getParameter("device_id"));
+			
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","temppass");
+			Statement stmt = conn.createStatement();
+			
+			String query = "DELETE FROM `enms`.`device` WHERE `id`='"+device_id+"'";
+			int status = stmt.executeUpdate(query);
+
+			json.put("response_code", status);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			json.put("response_code", -1);
+			json.put("error_message", "Invalid Request or Server Error.");
+			e.printStackTrace();
+		}finally{
+			response.getWriter().println(json);
+		}
 	}
 
 }
