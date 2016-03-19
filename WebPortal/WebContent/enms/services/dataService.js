@@ -31,6 +31,14 @@
 			});
 		};
 		
+		this.getMonitorList = function(){
+			return $http({
+			    method: 'GET',
+			    url: 'getMonitorList',
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
+		
 		this.createMonitor = function(monitor_name,polling_duration,device,action){
 			var param = $.param({
 				monitor_name:monitor_name,
@@ -41,6 +49,18 @@
 			return $http({
 			    method: 'POST',
 			    url: 'createMonitor',
+			    data: param,
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
+		
+		this.deleteMonitor = function(monitor_id){
+			var param = $.param({
+				monitor_id:monitor_id
+            });
+			return $http({
+			    method: 'POST',
+			    url: 'deleteMonitor',
 			    data: param,
 			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			});

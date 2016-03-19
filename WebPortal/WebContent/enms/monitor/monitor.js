@@ -12,6 +12,27 @@
 	
 	.controller('monitorCtrl', ['$scope','Data',function($scope,Data) {
 		
+		$scope.init = function(){
+			Data.getMonitorList()
+			.success(function(data){
+				$scope.monitors = data;
+			})
+			.error(function(){
+				console.log("ERROR");
+			});	
+		}
+		
+		$scope.init();
+		
+		$scope.deleteMonitor = function(monitor_id){
+			Data.deleteMonitor(monitor_id)
+			.success(function(data){
+				$scope.init();
+			})
+			.error(function(){
+				console.log("ERROR");
+			});
+		}
 	}]);
 	
 })();
