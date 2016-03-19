@@ -1,7 +1,7 @@
 (function (){
 	'use strict';
 	
-	angular.module('enms.monitor', ['ngRoute'])
+	angular.module('enms.monitor', ['ngRoute','enms.monitor.create'])
 	
 	.config(['$routeProvider', function($routeProvider) {
 	  $routeProvider.when('/monitor', {

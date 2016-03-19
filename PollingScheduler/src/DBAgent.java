@@ -184,17 +184,6 @@ public class DBAgent {
 		return monitorList;
 	}
 	
-	public int insertMonitorResult(MonitorResult mr){
-		int status = 0;
-		try {
-			status = stmt.executeUpdate("INSERT INTO `monitor_result` (`Poll_Time`, `resultData`, `monitor_id`) VALUES ('"+mr.getPollTime()+"', '\""+mr.getResultData()+"\"', '"+mr.getMonitor_id()+"');");
-		} catch (SQLException e) {e.printStackTrace();}
-		
-		//update into moniterResult table
-			System.runFinalization();
-		return status;
-	}
-	
 	public void updateLastPollByMonitorID(Monitor mon){
 		try {
 			stmt.executeUpdate("UPDATE `monitor` SET `lastPoll`='"+new Timestamp(new Date().getTime())+"' WHERE `id`='"+mon.getId()+"';");
