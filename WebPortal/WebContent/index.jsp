@@ -29,6 +29,7 @@
 <script src="enms/test/test.js"></script>
 <script src="enms/monitor/monitor.js"></script>
 <script src="enms/monitor/create/create.js"></script>
+<script src="enms/monitor/update/update.js"></script>
 <script src="enms/services/dataService.js"></script>
 <script>
   $.material.init();

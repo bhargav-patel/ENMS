@@ -1,0 +1,49 @@
+<div class="col-md-8 col-md-offset-2">
+	<div ng-repeat="alert in alerts" ng-show="alert.show">
+		<div class="alert alert-dismissible alert-{{alert.type}}">
+		  <button type="button" class="close" data-dismiss="alert">×</button>
+		  <strong>{{alert.msg}}</strong>
+		</div>	
+	</div>
+	<div class="well bs-component">
+		<form class="form-horizontal" ng-submit="submit()">
+		  <fieldset>
+		    <legend>Create Monitor</legend>
+		    <div class="form-group">
+		      <label for="monitor_name" class="col-md-2 control-label">Monitor Name</label>
+		
+		      <div class="col-md-10">
+		        <input type="text" class="form-control" id="monitor_name" placeholder="Enter Monitor Name" ng-model="monitor_name">
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <label for="polling_duration" class="col-md-2 control-label">Polling Duration</label>
+		
+		      <div class="col-md-10">
+		        <input type="text" class="form-control" id="polling_duration" placeholder="Enter Polling Duration" ng-model="polling_duration">
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <label for="device" class="col-md-2 control-label">Select Device</label>
+		
+		      <div class="col-md-10">
+		        <select id="device" class="form-control" ng-model="device" ng-options='d.id as (d.name+" ("+d.ip+")") for d in devices'></select>
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <label for="action" class="col-md-2 control-label">Select Action</label>
+		
+		      <div class="col-md-10">
+		        <select id="action" class="form-control" ng-model="action" ng-options="a.id as a.name for a in actions"></select>
+		      </div>
+		    </div>
+		    
+		    <div class="form-group">
+		      <div class="col-md-10 col-md-offset-2">
+		        <button type="submit" class="btn btn-primary">Submit</button>
+		      </div>
+		    </div>
+		  </fieldset>
+		</form>
+	</div>
+</div>
