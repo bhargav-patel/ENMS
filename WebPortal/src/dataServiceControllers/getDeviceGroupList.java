@@ -16,16 +16,16 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
- * Servlet implementation class getDeviceList
+ * Servlet implementation class getDeviceGroupList
  */
-@WebServlet("/getDeviceList")
-public class getDeviceList extends HttpServlet {
+@WebServlet("/getDeviceGroupList")
+public class getDeviceGroupList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public getDeviceList() {
+    public getDeviceGroupList() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -42,22 +42,18 @@ public class getDeviceList extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","temppass");
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM device");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM device_group");
 			
 			while (rs.next()) {
 				JSONObject json = new JSONObject();
 				json.put("id", rs.getInt(1));
 				json.put("name", rs.getString(2));
-				json.put("ip", rs.getString(3));
-				json.put("deviceGroup_id", rs.getInt(4));
 				
 				result.add(json);
 			}
 			
 			response.getWriter().println(result);
-			rs.close();
-			stmt.close();
-			conn.close();
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			response.getWriter().println("Invalid Request or Server Error.");
@@ -69,7 +65,7 @@ public class getDeviceList extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		// TODO Auto-generated method stub
 	}
 
 }
