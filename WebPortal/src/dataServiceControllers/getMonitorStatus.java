@@ -3,7 +3,10 @@ package dataServiceControllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,16 +17,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 
 /**
- * Servlet implementation class updateMonitor
+ * Servlet implementation class getMonitorStatus
  */
-@WebServlet("/updateMonitor")
-public class updateMonitor extends HttpServlet {
+@WebServlet("/getMonitorStatus")
+public class getMonitorStatus extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public updateMonitor() {
+    public getMonitorStatus() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -39,36 +42,35 @@ public class updateMonitor extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		JSONObject json = new JSONObject();
+		JSONObject result = new JSONObject();
 		response.setContentType("text/json");
-		
+		int total_count = 0;
+		Timestamp stamp = new Timestamp(new Date().getTime());
 		try {
-			int monitor_id = Integer.parseInt(request.getParameter("monitor_id"));
-			String monitor_name = request.getParameter("monitor_name");
-			int polling_duration = Integer.parseInt(request.getParameter("polling_duration"));
-			int device_id = Integer.parseInt(request.getParameter("device"));
-			int action_id = Integer.parseInt(request.getParameter("action"));
-			
+			int count=0;			
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","temppass");
 			Statement stmt = conn.createStatement();
-			
-			String query = "UPDATE `monitor` SET `name`='"+monitor_name+"', `polling-duration`='"+polling_duration+"', `device_id`='"+device_id+"', `action_id`='"+action_id+"' WHERE `id`='"+monitor_id+"';";
-			int status = stmt.executeUpdate(query);
-
-			json.put("response_code", status);
-			
+			ResultSet rs = stmt.executeQuery("SELECT COUNT(id) AS total FROM monitor");
+			rs.next();
+			total_count =rs.getInt("total"); 
+			rs = stmt.executeQuery("SELECT polling_duration,lastPoll FROM monitor ");
+			while(rs.next()){
+				if(( ( stamp.getTime()-rs.getTimestamp(2).getTime() )/1000 )<=rs.getInt(1)){
+					count++;
+				}
+			}
+			result.put("total_count", total_count);
+			result.put("count", count);
+			response.getWriter().println(result);
+			rs.close();
 			stmt.close();
 			conn.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			json.put("response_code", -1);
-			json.put("error_message", "Invalid Request or Server Error.");
+			response.getWriter().println("Invalid Request or Server Error.");
 			e.printStackTrace();
-		}finally{
-			response.getWriter().println(json);
-		}
+		}	
 	}
 
 }

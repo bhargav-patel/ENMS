@@ -59,7 +59,8 @@ public class createMonitor extends HttpServlet {
 			int status = stmt.executeUpdate(query);
 
 			json.put("response_code", status);
-			
+			stmt.close();
+			conn.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			json.put("response_code", -1);

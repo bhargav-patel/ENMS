@@ -65,7 +65,9 @@ public class getMonitorDetails extends HttpServlet {
 			
 			json.put("response_code", 1);
 			json.put("response", result);
-			
+			rs.close();
+			stmt.close();
+			conn.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			json.put("response_code", -1);

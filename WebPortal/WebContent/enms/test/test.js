@@ -10,7 +10,7 @@
 	  });
 	}])
 	
-	.controller('testCtrl', ['$scope','Data',function($scope,Data) {
+	.controller('testCtrl', ['$scope','Data',,function($scope,Data) {
 		$scope.updateLogs = function(){
 			Data.getResentMonitorResults()
 			.success(function(){
@@ -19,7 +19,7 @@
 			.error(function(){
 				console.log('ERROR');
 			});
-		}
+		};
 	}]);
-	
 })();
+

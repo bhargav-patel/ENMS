@@ -94,6 +94,14 @@
 			});
 		};
 		
+		this.getMonitorStatus = function(){
+			return $http({
+			    method: 'POST',
+			    url: 'getMonitorStatus',
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
+		
 	});
 	
 })();

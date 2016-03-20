@@ -54,7 +54,9 @@ public class getDeviceList extends HttpServlet {
 			}
 			
 			response.getWriter().println(result);
-			
+			rs.close();
+			stmt.close();
+			conn.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			response.getWriter().println("Invalid Request or Server Error.");
@@ -66,7 +68,7 @@ public class getDeviceList extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

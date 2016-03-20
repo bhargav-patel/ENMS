@@ -35,9 +35,7 @@ public class getResentMonitorResults extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-			
-		
+		doPost(request,response);		
 	}
 
 	/**
@@ -67,7 +65,9 @@ public class getResentMonitorResults extends HttpServlet {
 			}
 			
 			response.getWriter().println(result);
-			
+			rs.close();
+			stmt.close();
+			conn.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			response.getWriter().println("Invalid Request or Server Error.");

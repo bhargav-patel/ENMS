@@ -32,7 +32,7 @@ public class deleteMonitor extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		doPost(request, response);
 	}
 
 	/**
@@ -55,6 +55,8 @@ public class deleteMonitor extends HttpServlet {
 
 			json.put("response_code", status);
 			
+			stmt.close();
+			conn.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			json.put("response_code", -1);

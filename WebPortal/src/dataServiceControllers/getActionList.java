@@ -55,6 +55,9 @@ public class getActionList extends HttpServlet {
 			
 			response.getWriter().println(result);
 			
+			rs.close();
+			stmt.close();
+			conn.close();			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			response.getWriter().println("Invalid Request or Server Error.");
