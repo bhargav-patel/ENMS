@@ -15,6 +15,14 @@
 			});
 		};
 		
+		this.getDeviceGroupList = function(){
+						return $http({
+						    method: 'GET',
+						    url: 'getDeviceGroupList',
+						    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+						});
+					};
+		
 		this.getActionList = function(){
 			return $http({
 			    method: 'GET',
@@ -35,6 +43,15 @@
 			return $http({
 			    method: 'GET',
 			    url: 'getMonitorList',
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
+		
+		this.getMonitorListbyDeviceId = function(deviceid){
+			return $http({
+			    method: 'POST',
+			    url: 'getMonitorListbyDeviceId',
+			    data: "deviceid=" + deviceid,
 			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			});
 		};
@@ -98,6 +115,68 @@
 			return $http({
 			    method: 'POST',
 			    url: 'getMonitorStatus',
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
+		
+		this.analyseMonitor = function(monitorid){
+			return $http({
+			    method: 'POST',
+			    url: 'analyseMonitor',
+			    data: "monitorid="+monitorid,
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
+		
+		this.createDevice = function(device_name,ip,deviceGroup_id){
+			var param = $.param({
+				device_name:device_name,
+				ip:ip,
+				deviceGroup_id:deviceGroup_id
+            });
+			return $http({
+			    method: 'POST',
+			    url: 'createDevice',
+			    data: param,
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
+		
+		this.deleteDevice = function(device_id){
+			var param = $.param({
+				device_id:device_id
+            });
+			return $http({
+			    method: 'POST',
+			    url: 'deleteDevice',
+			    data: param,
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
+		
+		this.getDeviceDetails = function(device_id){
+			var param = $.param({
+				device_id:device_id
+            });
+			return $http({
+			    method: 'POST',
+			    url: 'getDeviceDetails',
+			    data: param,
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
+		
+		this.updateDevice = function(device_id,device_name,ip,deviceGroup_id){
+			var param = $.param({
+				device_id:device_id,
+				device_name:device_name,
+				ip:ip,
+				deviceGroup_id:deviceGroup_id
+            });
+			return $http({
+			    method: 'POST',
+			    url: 'updateDevice',
+			    data: param,
 			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			});
 		};
