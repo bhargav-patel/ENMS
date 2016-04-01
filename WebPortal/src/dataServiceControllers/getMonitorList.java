@@ -37,12 +37,11 @@ public class getMonitorList extends HttpServlet {
 		// TODO Auto-generated method stub
 		JSONArray result = new JSONArray();
 		response.setContentType("text/json");
-		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","temppass");
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM monitor");
+			ResultSet rs= stmt.executeQuery("SELECT * FROM monitor");
 			
 			while (rs.next()) {
 							

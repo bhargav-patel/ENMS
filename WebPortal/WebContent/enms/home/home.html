@@ -32,13 +32,42 @@
 		</div>
 	</div>
 	
-	<div class="col-md-9">
+	<div class="col-md-12">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h2 class="text-center">Resent Stats</h2>
+				<h2 class="text-center">Recent Stats</h2>
 			</div>
 			<div class="panel-body">
-				{{recentMonitorLogs | json}}
+				<table class="table table-bordered table-hovered table-striped">
+					<tr ng-repeat="(k, v) in recentMonitorLogs[0]">
+						<td>{{k}}</td>
+						<td>{{v}}</td>
+					</tr>
+				</table>
+				<table class="table table-bordered table-hovered table-striped">
+					<tr ng-repeat="(k, v) in recentMonitorLogs[1]">
+						<td>{{k}}</td>
+						<td>{{v}}</td>
+					</tr>
+				</table>
+				<table class="table table-bordered table-hovered table-striped">
+					<tr ng-repeat="(k, v) in recentMonitorLogs[2]">
+						<td>{{k}}</td>
+						<td>{{v}}</td>
+					</tr>
+				</table>
+				<table class="table table-bordered table-hovered table-striped">
+					<tr ng-repeat="(k, v) in recentMonitorLogs[3]">
+						<td>{{k}}</td>
+						<td>{{v}}</td>
+					</tr>
+				</table>
+				<table class="table table-bordered table-hovered table-striped">
+					<tr ng-repeat="(k, v) in recentMonitorLogs[4]">
+						<td>{{k}}</td>
+						<td>{{v}}</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 	</div>

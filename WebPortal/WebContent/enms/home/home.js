@@ -23,7 +23,8 @@
 		};
 		$interval(function(){
 			$scope.getResentMonitorResults(5);
-		},30000);
+			$scope.getMonitorStatus();
+		},3000);
 		
 		
 		
@@ -49,15 +50,13 @@
 						},
 					];
 
-					var chart = new Chart(ctx).Doughnut(data);
+					var chart = new Chart(ctx).Doughnut(data,{animateScale: true,animationSteps:1});
 					console.log(data);
 			})
 			.error(function(){
 				console.log('Error in fetching Monitor Status');
 			});
 		};
-		
-		$scope.getMonitorStatus();
 		
 	}]);
 	

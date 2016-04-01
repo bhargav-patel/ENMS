@@ -20,7 +20,7 @@
 			.error(function(){
 				console.log("ERROR");
 			});	
-		}
+		};
 		
 		$scope.init();
 		
@@ -32,7 +32,7 @@
 			.error(function(){
 				console.log("ERROR");
 			});
-		}
+		};
 	}]);
 	
 })();

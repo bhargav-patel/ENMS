@@ -35,6 +35,7 @@
 <script src="enms/device/create/create.js"></script>
 <script src="enms/device/update/update.js"></script>
 <script src="enms/services/dataService.js"></script>
+<script src="enms/AnalyseMonitorResults/AnalyseMonitorResult.js"></script>
 <script>
   $.material.init();
 </script>
