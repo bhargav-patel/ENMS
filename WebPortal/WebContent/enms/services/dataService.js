@@ -119,11 +119,11 @@
 			});
 		};
 		
-		this.analyseMonitor = function(monitorid){
+		this.analyseMonitor = function(monitorid,actionid){
 			return $http({
 			    method: 'POST',
 			    url: 'analyseMonitor',
-			    data: "monitorid="+monitorid,
+			    data: "monitorid="+monitorid+"&actionid="+actionid,
 			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			});
 		};

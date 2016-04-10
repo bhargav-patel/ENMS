@@ -27,15 +27,14 @@
 		},3000);
 		
 		
-		
-		$scope.getMonitorStatus = function(){
+		function drawChart(animation_steps){
 			Data.getMonitorStatus()
 			.success(function(data){
 				$scope.count = data.count;
 				$scope.total_count = data.total_count;
 				
-				var ctx = $("#myChart").get(0).getContext("2d");
-					var data = [
+				var ctx = $("#monitor_Status").get(0).getContext("2d");
+					data = [
 						{
 							value: data.total_count-data.count,
 							color: "RED",
@@ -50,14 +49,20 @@
 						},
 					];
 
-					var chart = new Chart(ctx).Doughnut(data,{animateScale: true,animationSteps:1});
+					new Chart(ctx).Doughnut(data,{animateScale: true,animationSteps:animation_steps});
 					console.log(data);
 			})
 			.error(function(){
 				console.log('Error in fetching Monitor Status');
 			});
-		};
+		}
 		
+		$scope.getMonitorStatus = function(){drawChart(1);};
+		
+		$(document).ready(function(){
+			$scope.getResentMonitorResults(5);
+			drawChart(100);
+		});
 	}]);
 	
 })();
