@@ -55,7 +55,7 @@ public class createMonitor extends HttpServlet {
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","temppass");
 			Statement stmt = conn.createStatement();
 			
-			String query = "INSERT INTO `enms`.`monitor` (`name`, `polling-duration`, `action_id`, `device_id`) VALUES ('"+monitor_name+"', '"+polling_duration+"', '"+action_id+"', '"+device_id+"');";
+			String query = "INSERT INTO `enms`.`monitor` (`name`, `polling_duration`, `action_id`, `device_id`) VALUES ('"+monitor_name+"', '"+polling_duration+"', '"+action_id+"', '"+device_id+"');";
 			int status = stmt.executeUpdate(query);
 
 			json.put("response_code", status);

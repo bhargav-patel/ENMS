@@ -15,7 +15,7 @@ public class ActionImplementation {
 		JSONObject result = new JSONObject();
 		File[] paths;
 		FileSystemView fsv = FileSystemView.getFileSystemView();
-		result.put("OS name" , System.getProperty("os.name") + "\n");
+		result.put("OS name" , System.getProperty("os.name"));
 	
 		// returns pathnames for files and directory
 		paths = File.listRoots();
@@ -25,7 +25,7 @@ public class ActionImplementation {
 		{
 			i++;
 		    // prints file and directory paths
-			result.put("Drive Name"+i, path);
+			result.put("Drive Name"+i, path.toString().substring(0, 1));
 			result.put("Description"+i,fsv.getSystemTypeDescription(path));
 		}
 		

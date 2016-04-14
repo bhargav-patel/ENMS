@@ -39,10 +39,18 @@
                 $(this).off('hidden.bs.modal'); 
             });
 			
-			Data.analyseMonitor(monitorid)
+			Data.analyseMonitor(monitorid,actionid)
 			.success(function(data){
 				$scope.monitorResult = data;
-				drawChart(actionid);//calls drawChart function which drawsChart
+					drawChart(actionid);//calls drawChart function which drawsChart
+				if(actionid==12){
+					while(true){
+						var str = data.resultData;
+						$scope.monitorResult.resultData = str.Description1 + " : "+str.Drive_Name1;
+						break;
+					}
+				}
+				console.log($scope.monitorResult.resultData);
 			})
 			.error(function(){
 				console.log("ERROR");
@@ -55,8 +63,11 @@
 			var dataChart =$scope.monitorResult.resultData; 
 			var ctx = $("#analyse_Monitor").get(0).getContext("2d");
 			var myChart;
-			
+			console.log(actionid);
 			if(actionid==14){
+				$scope.Analysis_Heading = "Ram Usage Statistics";
+				$scope.monitorResult.resultData ="Graph of RAM Usage(in MBs) with respect time";
+				
 				var values = {
 					    labels: ["0","1", "2","3","4","5","6","7","8","9"],
 					    datasets: [
@@ -76,6 +87,7 @@
 					    ]
 					};
 				myChart = new Chart(ctx).Line(values,{bezierCurve : true});
+				myChart.update();
 			}
 			else{
 				ctx.clearRect(0, 0, $("#analyse_Monitor").get(0).width, $("#analyse_Monitor").get(0).height);

@@ -3,7 +3,10 @@ package dataServiceControllers;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,19 +14,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
- * Servlet implementation class updateMonitor
+ * Servlet implementation class overview
  */
-@WebServlet("/updateMonitor")
-public class updateMonitor extends HttpServlet {
+@WebServlet("/overview")
+public class overview extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public updateMonitor() {
+    public overview() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -42,32 +46,43 @@ public class updateMonitor extends HttpServlet {
 		// TODO Auto-generated method stub
 		JSONObject json = new JSONObject();
 		response.setContentType("text/json");
-		
-		try {
-			int monitor_id = Integer.parseInt(request.getParameter("monitor_id"));
-			String monitor_name = request.getParameter("monitor_name");
-			int polling_duration = Integer.parseInt(request.getParameter("polling_duration"));
-			int device_id = Integer.parseInt(request.getParameter("device"));
-			int action_id = Integer.parseInt(request.getParameter("action"));
-			
+		JSONArray jsonArray = new JSONArray();
+		try {	
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","temppass");
 			Statement stmt = conn.createStatement();
 			
-			String query = "UPDATE `monitor` SET `name`='"+monitor_name+"', `polling_duration`='"+polling_duration+"', `device_id`='"+device_id+"', `action_id`='"+action_id+"' WHERE `id`='"+monitor_id+"';";
-			int status = stmt.executeUpdate(query);
-
-			json.put("response_code", status);
-			
+			String query = "SELECT monitor.id,monitor.name,monitor.polling-duration,monitor.lastPoll,monitor.action_id,action.name,device.name,device.ip,monitor_result.resultData FROM monitor,monitor_result,action,device where monitor.id=monitor_id AND action.id=action_id AND monitor.device_id=device.id group by device.id;";
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				JSONObject result = new JSONObject();
+				result.put("monitor_id", rs.getInt(1));
+				result.put("monitor_name", rs.getString(2));
+				result.put("polling-duration", rs.getInt(3));
+				result.put("lastPoll", rs.getTimestamp(4));
+				result.put("action_id", rs.getInt(5));
+				result.put("actionName", rs.getString(6));
+				result.put("deviceName", rs.getString(7));
+				result.put("deviceIP", rs.getString(8));
+				result.put("monitorResultData", rs.getString(9));
+				Timestamp stamp = new Timestamp(new Date().getTime());
+				if(( ( stamp.getTime()-rs.getTimestamp(4).getTime() )/1000 )<=rs.getInt(1)){
+				result.put("live", "Y");
+				}else{
+					result.put("live", "N");
+				}
+				jsonArray.add(result);
+			}
+			rs.close();
 			stmt.close();
 			conn.close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			json.put("response_code", -1);
 			json.put("error_message", "Invalid Request or Server Error.");
+			jsonArray.add(json);
 			e.printStackTrace();
 		}finally{
-			response.getWriter().println(json);
+			response.getWriter().println(jsonArray);
 		}
 	}
 

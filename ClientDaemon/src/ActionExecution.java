@@ -43,16 +43,21 @@ public class ActionExecution {
 		if(fileName.equalsIgnoreCase("drives_info")){
 			result = ActionImplementation.get_PC_Drivers_info();
 		}
-		if(fileName.equalsIgnoreCase("ram_status")){
+		else if(fileName.equalsIgnoreCase("ram_status")){
 			dh.println("ram_status");
 			result = ActionImplementation.get_RAM_info();
 			dh.println(result.toJSONString());
 		}
-		if(fileName.equalsIgnoreCase("username")){
+		else if(fileName.equalsIgnoreCase("username")){
 			dh.println("username");
 			String str = System.getProperty("user.name");
 			dh.println(str);
 			result.put("result", str);
+		}
+		else if(fileName.equalsIgnoreCase("ram_usage")){
+			for(int i=0;i<10;i++){
+				result.put("Usage"+i, ActionImplementation.get_RAM_info());
+			}
 		}
 		//ACTION Execution logic considering client OS.
 		dh.println("Executing Action and result is:" + result.toString());//for debug

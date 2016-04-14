@@ -5,7 +5,7 @@
 				<h2 class="text-center">Monitor Status</h2>
 			</div>
 			<div class="panel-body">
-				<div><canvas id="monitor_Status" width="200" height="200"></canvas></div>
+				<div><canvas id="monitor_Status" width="200" height="200"></canvas><span class="label label-danger"> </span>Down<span class="label label-success"> </span>Up</div>
 			</div>
 		</div>
 	</div>
@@ -16,7 +16,9 @@
 				<h2 class="text-center">Notifications</h2>
 			</div>
 			<div class="panel-body">
-				<h2 class="text-center">Display Notifications</h2>
+				<div class="alert alert-success container-fluid"><button type="button" class="close" data-dismiss="alert">x</button>New Device added</div>
+				<div class="alert alert-dismissible alert-warning"><button type="button" class="close" data-dismiss="alert">x</button>Disk Usage very High on Device : vgec</div>
+				<div class="alert alert-dismissible alert-info"><button type="button" class="close" data-dismiss="alert">x</button>Action Pushed with MonitorID:15</div>
 			</div>
 		</div>
 	</div>
@@ -24,10 +26,13 @@
 	<div class="col-md-4">
 		<div class="panel panel-primary">
 			<div class="panel-heading">
-				<h2 class="text-center">Add Widget</h2>
+				<h3 class="text-center">{{WidgetHeading}}</h3>
 			</div>
 			<div class="panel-body">
-				<h2 class="text-center">Add Widget</h2>
+					Poll-Time: {{monitorResult.Poll_Time}}<br>
+					<div><canvas id="fake"></canvas></div>
+					MonitorID: {{monitorResult.monitor_id}}<br>
+					<button ng-click="analyseMonitor(1,14)" class="btn btn-success btn-sm" id="Analyse">Analyse</button>
 			</div>
 		</div>
 	</div>
@@ -38,36 +43,57 @@
 				<h2 class="text-center">Recent Stats</h2>
 			</div>
 			<div class="panel-body">
-				<table class="table table-bordered table-hovered table-striped">
-					<tr ng-repeat="(k, v) in recentMonitorLogs[0]">
-						<td>{{k}}</td>
-						<td>{{v}}</td>
-					</tr>
-				</table>
-				<table class="table table-bordered table-hovered table-striped">
-					<tr ng-repeat="(k, v) in recentMonitorLogs[1]">
-						<td>{{k}}</td>
-						<td>{{v}}</td>
-					</tr>
-				</table>
-				<table class="table table-bordered table-hovered table-striped">
-					<tr ng-repeat="(k, v) in recentMonitorLogs[2]">
-						<td>{{k}}</td>
-						<td>{{v}}</td>
-					</tr>
-				</table>
-				<table class="table table-bordered table-hovered table-striped">
-					<tr ng-repeat="(k, v) in recentMonitorLogs[3]">
-						<td>{{k}}</td>
-						<td>{{v}}</td>
-					</tr>
-				</table>
-				<table class="table table-bordered table-hovered table-striped">
-					<tr ng-repeat="(k, v) in recentMonitorLogs[4]">
-						<td>{{k}}</td>
-						<td>{{v}}</td>
-					</tr>
-				</table>
+			
+			<div class="panel panel-success">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">MonitorID:  {{recentMonitorLogs[0].monitor_id}}</h3>
+			  </div>
+			  <div class="panel-body">
+			    <div class="alert alert-info">Time of Polling:   {{recentMonitorLogs[0].Poll_Time}}</div>
+			    <div class="well" ng-repeat="(k,v) in recentMonitorLogs[0].resultData" ><h3>ResultData:  </h3><br>{{k}}{{v}}<br></div>
+			  </div>
+			</div>
+			
+			<div class="panel panel-success">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">MonitorID:  {{recentMonitorLogs[1].monitor_id}}</h3>
+			  </div>
+			  <div class="panel-body">
+			    <div class="alert alert-info">Time of Polling:   {{recentMonitorLogs[1].Poll_Time}}</div>
+			    <div class="well"><h3>ResultData:  </h3>{{recentMonitorLogs[1].resultData}}</div>
+			  </div>
+			</div>
+			
+			<div class="panel panel-success">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">MonitorID:  {{recentMonitorLogs[2].monitor_id}}</h3>
+			  </div>
+			  <div class="panel-body">
+			    <div class="alert alert-info">Time of Polling:   {{recentMonitorLogs[2].Poll_Time}}</div>
+			    <div class="well"><h3>ResultData:  </h3>{{recentMonitorLogs[2].resultData}}</div>
+			  </div>
+			</div>
+			
+			<div class="panel panel-success">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">MonitorID:  {{recentMonitorLogs[3].monitor_id}}</h3>
+			  </div>
+			  <div class="panel-body">
+			    <div class="alert alert-info">Time of Polling:   {{recentMonitorLogs[3].Poll_Time}}</div>
+			    <div class="well"><h3>ResultData:  </h3>{{recentMonitorLogs[3].resultData}}</div>
+			  </div>
+			</div>
+			
+			<div class="panel panel-success">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">MonitorID:  {{recentMonitorLogs[4].monitor_id}}</h3>
+			  </div>
+			  <div class="panel-body">
+			    <div class="alert alert-info">Time of Polling:   {{recentMonitorLogs[4].Poll_Time}}</div>
+			    <div class="well"><h3>ResultData:  </h3>{{recentMonitorLogs[4].resultData}}</div>
+			  </div>
+			</div>
+		
 			</div>
 		</div>
 	</div>

@@ -16,12 +16,20 @@
 		};
 		
 		this.getDeviceGroupList = function(){
-						return $http({
-						    method: 'GET',
-						    url: 'getDeviceGroupList',
-						    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-						});
-					};
+			return $http({
+			    method: 'GET',
+			    url: 'getDeviceGroupList',
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
+		
+		this.getOverview = function(){
+			return $http({
+			    method: 'GET',
+			    url: 'overview',
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
 		
 		this.getActionList = function(){
 			return $http({

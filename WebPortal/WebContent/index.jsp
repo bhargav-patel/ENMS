@@ -39,5 +39,6 @@
 <script>
   $.material.init();
 </script>
+<a href="javascript:void(0)" class="btn btn-info btn-fab monitor-float-button"><span class="glyphicon glyphicon-dashboard"></span></a>
 </body>
 </html>

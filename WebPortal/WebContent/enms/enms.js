@@ -13,3 +13,8 @@
 	}]);
 
 })();
+
+$('#sidenavbar').hide();
+$( "#showsidenavbar" ).click(function() {
+	  $('#sidenavbar').toggle("slow");
+	});

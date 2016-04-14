@@ -81,28 +81,15 @@
 	          <h4 class="modal-title">Monitors Analysis</h4>
 		    </div>
 		    
-	        <div class="modal-body">
-				<table class="table table-striped table-hover ">
-					<thead>
-					<tr>
-						<th>#</th>
-						<th>PollTime</th>
-						<th>ResultData</th>
-						<th>MonitorID</th>
-					</tr>
-					</thead>
-				<tbody>
-				<tr>
-					<td>{{monitorResult.id}}</td>
-					<td>{{monitorResult.Poll_Time}}</td>
-					<td style="padding:1px;word-break:break-all" id="demno">{{monitorResult.resultData}}</td>
-					
-					<td>{{monitorResult.monitor_id}}</td>
-				</tr>
-				</tbody>
-				</table>
+	        <div class="modal-body container-fluid">
+				<div class="jumbotron">
+				<h2>{{Analysis_Heading}}</h2>
+					<h3>MonitorResult ID:{{monitorResult.id}}<br></h3>
+					Poll-Time: {{monitorResult.Poll_Time}}<br>
+					ResultData: {{monitorResult.resultData}}<br>
+					MonitorID: {{monitorResult.monitor_id}}<br>
 				</div>
-				<div><canvas id="analyse_Monitor" width="600" height="400" style="{margin:2px}"></canvas></div>
+				<div><canvas id="analyse_Monitor" width="550" height="350"></canvas></div>
 		        <div class="modal-footer">
 		          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		        </div>
