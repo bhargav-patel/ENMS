@@ -54,9 +54,9 @@ public class getMonitorStatus extends HttpServlet {
 			ResultSet rs = stmt.executeQuery("SELECT COUNT(id) AS total FROM monitor");
 			rs.next();
 			total_count =rs.getInt("total"); 
-			rs = stmt.executeQuery("SELECT polling_duration,lastPoll FROM monitor ");
+			rs = stmt.executeQuery("SELECT * FROM monitor ");
 			while(rs.next()){
-				if(( ( stamp.getTime()-rs.getTimestamp(2).getTime() )/1000 )<=rs.getInt(1)){
+				if(( ( stamp.getTime()-rs.getTimestamp(4).getTime() )/1000 )<= rs.getInt(3)){
 					count++;
 				}
 			}
