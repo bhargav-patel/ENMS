@@ -23,11 +23,7 @@
 	            </li>                       
 	          </ul>
          	</li>
-			<li><a href="/login"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-			<!--  show appropriate auth options
-			<li><a href="/login">LogIn</a></li>
-			<li><a href="#">Register</a></li>
-			 -->
+			<li><a href="login/login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 	  </ul>
 	</div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

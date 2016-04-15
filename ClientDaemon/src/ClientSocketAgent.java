@@ -44,9 +44,9 @@ public class ClientSocketAgent {
 			else{
 				f.setWritable(true);
 			}
-						
-			while((c = dis.read())>0){
-				fos.write(c);
+					byte[] bytes = new byte[8];
+			while(dis.read(bytes)>-1){
+				fos.write(bytes);
 			}
 			
 			

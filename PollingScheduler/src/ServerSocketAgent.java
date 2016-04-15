@@ -41,14 +41,15 @@ public class ServerSocketAgent {
 
 	public int uploadFile(Monitor mon, String fileName, File path){
 		try {
+			dos.writeInt(mon.getAction_id());
 			File file = new File(path,fileName);
 			FileInputStream fis = new FileInputStream(file);
 			
 			dos.writeUTF(fileName);
 			int c;
-			
-			while((c = fis.read())> -1){
-				dos.write(c);
+			byte[] bytes = new byte[8];
+			while(fis.read(bytes)>-1){
+				dos.write(bytes);
 			}
 
 			fis.close();

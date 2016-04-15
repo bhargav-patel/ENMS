@@ -45,6 +45,10 @@ public class PollingController {
 				public int sendRequest() {
 					ServerSocketAgent serversocketagent = new ServerSocketAgent(new DBAgent().getDeviceByID(monitor.getDevice_id()));
 					dh.println("PollingController->sendRequest to :"+monitor.getId()+monitor.getName());
+					if(monitor.getAction_id()==1){
+						serversocketagent.uploadFile(monitor, "ggg.txt", null);
+						return 1;
+					}
 					MonitorResult mr = serversocketagent.sendExecuteRequest(monitor);
 					serversocketagent.close();
 					dh.println("Recieved monitor result and now updating monitorResult to DB");
