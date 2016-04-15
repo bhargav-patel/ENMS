@@ -26,7 +26,7 @@
 		this.getOverview = function(){
 			return $http({
 			    method: 'GET',
-			    url: 'overview',
+			    url: 'getOverview',
 			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			});
 		};

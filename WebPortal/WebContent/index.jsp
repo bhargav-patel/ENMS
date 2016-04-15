@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="enms/lib/bower_components/bootstrap-material-design/dist/css/ripples.min.css">
 	<link rel="stylesheet" href="enms/lib/bower_components/bootstrap-material-design/dist/css/material-fullpalette.min.css">
 	<link rel="stylesheet" href="enms/css/custom.css">
+	
 </head>
 <body>
 
@@ -36,9 +37,9 @@
 <script src="enms/device/update/update.js"></script>
 <script src="enms/services/dataService.js"></script>
 <script src="enms/AnalyseMonitorResults/AnalyseMonitorResult.js"></script>
+<script src="enms/overview/overview.js"></script>
 <script>
   $.material.init();
 </script>
-<a href="javascript:void(0)" class="btn btn-info btn-fab monitor-float-button"><span class="glyphicon glyphicon-dashboard"></span></a>
 </body>
 </html>

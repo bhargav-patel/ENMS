@@ -1,0 +1,25 @@
+<div  ng-repeat="monitor in monitor_array">
+	<div class="jumbotron" >
+	
+		<div class="row">
+			<div class="col-md-12">
+			<h3><label href="#" data-toggle="tooltip" title="IP Addres :{{monitor.deviceIP}}" style="color:#006;float:left;">Device Name: {{monitor.deviceName}}</label>
+				<span style="color:#000066;float:right;margin-right:6%;">Monitor ID: {{monitor.monitor_id}}</span>
+			</h3>
+			</div>
+			
+			<div class="col-md-6">
+			<div class="alert alert-danger">Last Poll : {{monitor.lastPoll}}</div>
+			<table>
+				<tr><td>Monitor Name:</td><td> {{monitor.monitor_name}}</td></tr>
+				<tr><td>Action Name :</td><td> {{monitor.actionName}}</td></tr>
+				<td>Polling Duration :</td><td> {{monitor.polling_duration}}</td>
+			</table>
+			</div>
+			<div class="col-md-6">
+			<span class="glyphicon glyphicon-{{monitor.live}}" style="font-size:100px;float:right;margin-right:20%;"></span>
+			</div>
+			
+		</div>
+	</div>
+</div>

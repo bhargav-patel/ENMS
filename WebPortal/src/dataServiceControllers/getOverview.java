@@ -20,14 +20,14 @@ import org.json.simple.JSONObject;
 /**
  * Servlet implementation class overview
  */
-@WebServlet("/overview")
-public class overview extends HttpServlet {
+@WebServlet("/getOverview")
+public class getOverview extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public overview() {
+    public getOverview() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,13 +37,6 @@ public class overview extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		JSONObject json = new JSONObject();
 		response.setContentType("text/json");
 		JSONArray jsonArray = new JSONArray();
@@ -52,27 +45,29 @@ public class overview extends HttpServlet {
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","temppass");
 			Statement stmt = conn.createStatement();
 			
-			String query = "SELECT monitor.id,monitor.name,monitor.polling-duration,monitor.lastPoll,monitor.action_id,action.name,device.name,device.ip,monitor_result.resultData FROM monitor,monitor_result,action,device where monitor.id=monitor_id AND action.id=action_id AND monitor.device_id=device.id group by device.id;";
+			String query = "SELECT monitor.id,monitor.name,monitor.polling_duration,monitor.lastPoll,monitor.action_id,action.name,device.name,device.ip,monitor_result.resultData FROM monitor,monitor_result,action,device where monitor.id=monitor_id AND action.id=action_id AND monitor.device_id=device.id group by device.id;";
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
 				JSONObject result = new JSONObject();
 				result.put("monitor_id", rs.getInt(1));
 				result.put("monitor_name", rs.getString(2));
-				result.put("polling-duration", rs.getInt(3));
-				result.put("lastPoll", rs.getTimestamp(4));
+				result.put("polling_duration", rs.getInt(3));
+				result.put("lastPoll", rs.getTimestamp(4).toString());
 				result.put("action_id", rs.getInt(5));
 				result.put("actionName", rs.getString(6));
 				result.put("deviceName", rs.getString(7));
 				result.put("deviceIP", rs.getString(8));
 				result.put("monitorResultData", rs.getString(9));
 				Timestamp stamp = new Timestamp(new Date().getTime());
-				if(( ( stamp.getTime()-rs.getTimestamp(4).getTime() )/1000 )<=rs.getInt(1)){
-				result.put("live", "Y");
+				if(( ( stamp.getTime()-rs.getTimestamp(4).getTime() )/1000 )<=(rs.getInt(3))){
+				result.put("live", "ok");
 				}else{
-					result.put("live", "N");
+					result.put("live", "remove");
 				}
 				jsonArray.add(result);
+				System.out.println(stamp.getTime() + "::::::DB timestamp=     "+ rs.getTimestamp(4).getTime() + "::::::rs.getint=  " + rs.getInt(1)+" ::::result=  "+( ( stamp.getTime()-rs.getTimestamp(4).getTime() )/1000 ));
 			}
+			response.getWriter().println(jsonArray);
 			rs.close();
 			stmt.close();
 			conn.close();
@@ -82,8 +77,15 @@ public class overview extends HttpServlet {
 			jsonArray.add(json);
 			e.printStackTrace();
 		}finally{
-			response.getWriter().println(jsonArray);
+			
 		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 	}
 
 }
