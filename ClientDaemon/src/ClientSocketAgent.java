@@ -25,6 +25,12 @@ public class ClientSocketAgent {
 			e.printStackTrace();
 		}
 	}
+	
+	public void sendMessage(String Message){
+		try {
+			dos.writeUTF(Message);
+		} catch (IOException e) {e.printStackTrace();}
+	}
 	public void getFile(){
 		//receive file from ServerSocketAgent
 		String filename = new String();
@@ -49,7 +55,7 @@ public class ClientSocketAgent {
 				fos.write(bytes);
 			}
 			
-			
+			fos.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,3 +1,9 @@
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -5,7 +11,8 @@ import org.json.simple.parser.ParseException;
 
 public class ActionExecution {
 	private String fileName;
-	private String runCommand;
+	private String runFunction;
+	private URLClassLoader loader;
 	
 	public ActionExecution(JSONObject action) {
 		DebugHelper dh = new DebugHelper("ActionExecution", "Constructor");
@@ -15,7 +22,7 @@ public class ActionExecution {
 		dh.println("inintialising actionExecutiton and getting filename and runCmd");//for debug
 		// TODO Auto-generated constructor stub
 		fileName = (String) action.get("Name");
-		runCommand = (String) action.get("runCommand");
+		runFunction = (String) action.get("runFunction");
 		
 		dh.footer();
 	}
@@ -26,45 +33,27 @@ public class ActionExecution {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	public String getRunCommand() {
-		return runCommand;
+	public String getrunFunction() {
+		return runFunction;
 	}
-	public void setRunCommand(String runCommand) {
-		this.runCommand = runCommand;
+	public void setrunFunction(String runFunction) {
+		this.runFunction = runFunction;
 	}
 	
-	public JSONObject ExecuteAction(JSONObject action){
-		DebugHelper dh = new DebugHelper("ActionExecution", "Constructor");
-		dh.debugThisFunction(true);
-		dh.header();
-		
-		dh.println("ExecuteAction in actionExecution");
+	public JSONObject ExecuteAction(JSONObject action){//rename to ExecuteAction and delete existing functin
 		JSONObject result = new JSONObject();
-		if(fileName.equalsIgnoreCase("drives_info")){
-			result = ActionImplementation.get_PC_Drivers_info();
+		String actionDir = LocalIO.getConfig().get("actionDir").toString();
+		try {
+			loader = new URLClassLoader(new URL[]{new URL("file://"+ actionDir+"/")});
+			Class<?> c = loader.loadClass(fileName);
+			Object obj = c.newInstance();
+			Method m = c.getDeclaredMethod(runFunction,new Class[]{Object.class});
+			m.setAccessible(true);
+			Object resultobj = m.invoke(obj,new Object[]{null});
+			result = (JSONObject)resultobj;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		else if(fileName.equalsIgnoreCase("ram_status")){
-			dh.println("ram_status");
-			result = ActionImplementation.get_RAM_info();
-			dh.println(result.toJSONString());
-		}
-		else if(fileName.equalsIgnoreCase("username")){
-			dh.println("username");
-			String str = System.getProperty("user.name");
-			dh.println(str);
-			result.put("result", str);
-		}
-		else if(fileName.equalsIgnoreCase("ram_usage")){
-			for(int i=0;i<10;i++){
-				result.put("Usage"+i, ActionImplementation.get_RAM_info());
-			}
-		}
-		//ACTION Execution logic considering client OS.
-		dh.println("Executing Action and result is:" + result.toString());//for debug
-
-		
-		dh.footer();
-		
 		return result;
 	}
 }

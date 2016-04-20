@@ -1,7 +1,5 @@
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectOutputStream.PutField;
 import java.net.Socket;
 
 import org.json.simple.JSONObject;
@@ -23,15 +21,13 @@ public class RequestHandler implements Runnable {
 		dh.header();
 				
 		action_id = csa.readActionId();
-		if(action_id==1){
-			csa.getFile();
-			return;
-		}
+		
 		JSONObject jsonResult = new JSONObject();
-		File actionDir = new File(LocalIO.getConfig().get("actionDir").toString());
-		File actionFile = new File(actionDir, action_id+".json");
-		System.out.println("actionID= "+action_id);
+		
+		File actionFile = setActionFile();
+		
 		dh.println(actionFile.getName());
+		
 		jsonResult = executeFile(actionFile.getName());
 
 		csa.sendActionResponse(jsonResult);
@@ -40,17 +36,37 @@ public class RequestHandler implements Runnable {
 		dh.footer();
 	}
 
+	/*
+	 * Check if json & java class file exist
+	 * if not then accept from server by sending message Not available
+	 * else send message to server as available
+	 */
+	private File setActionFile() {
+		File actionDir = new File(LocalIO.getConfig().get("actionDir").toString());
+		File actionFile = new File(actionDir, action_id+".json");
+		
+		if(!actionFile.exists()){
+			csa.sendMessage("json_NotAvailable");
+			csa.getFile();
+			csa.getFile();
+		}
+		else{
+			csa.sendMessage("json_Available");
+		}
+		return actionFile;
+	}
+
 	private JSONObject executeFile(String fileName) {
-//		DebugHelper dh = new DebugHelper("RequestHandler", "executeFile()");
-//		dh.debugThisFunction(true);
-//		dh.header();
-//		
+		DebugHelper dh = new DebugHelper("RequestHandler", "executeFile()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
 		System.out.println(fileName);
 		JSONObject action = LocalIO.getAction(fileName.substring(0, fileName.indexOf('.')));
 		ActionExecution ae = new ActionExecution(action);
 		JSONObject result = ae.ExecuteAction(action);
 
-//		dh.footer();
+		dh.footer();
 		return result;
 	}
 

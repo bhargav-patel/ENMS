@@ -3,6 +3,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
@@ -11,6 +12,7 @@ import java.util.Date;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 
 public class ServerSocketAgent {
@@ -53,7 +55,6 @@ public class ServerSocketAgent {
 			}
 
 			fis.close();
-			dos.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -63,22 +64,20 @@ public class ServerSocketAgent {
 		return 0;		
 	}
 	
-	public int pushActionToClient(){
-		//Implement after implementing handler in client daemon
-		return 0;		
-	}
-	
 	public MonitorResult sendExecuteRequest(Monitor mon){
 		DebugHelper dh = new DebugHelper("ServerSocketAgent", "sendExecuteRequest()");
 		dh.debugThisFunction(true);
 		dh.header();
-		
 		dh.println("inside serversocketagent->sendexerequest");//debug
+		
 		MonitorResult monRes = null;
 		DBAgent dbagent = new DBAgent();
 		//get Monitor Result object with interaction with ClientSocketAgent
 		try {
 			dos.writeInt(mon.getAction_id());
+			if(receiveMessage().equalsIgnoreCase("json_NotAvailable")){
+				pushActionToClient(mon);
+			}
 			//dataoutputwriter.close();
 			dh.println(">>>>>>>>"+socket.isClosed()+socket.isConnected());
 			ObjectInputStream ois = new ObjectInputStream(dis);
@@ -100,6 +99,24 @@ public class ServerSocketAgent {
 		
 		dh.footer();
 		return monRes;
+	}
+
+	private void pushActionToClient(Monitor mon) {
+		uploadFile(mon, String.valueOf(mon.getAction_id()).concat(".json"), null);
+		File file = new File(String.valueOf(mon.getAction_id()).concat(".json"));
+		JSONParser parser = new JSONParser();
+		JSONObject actionFileName = null;
+		try {
+			actionFileName = (JSONObject)parser.parse(new FileReader(file));
+		} catch (IOException | ParseException e) {e.printStackTrace();}
+		uploadFile(mon, actionFileName.get("Name").toString().concat(".class"), null);
+	}
+	
+	public String receiveMessage(){
+		try {
+			return dis.readUTF();
+		} catch (IOException e) {e.printStackTrace();}
+		return "Error in receiving message";
 	}
 	
 	public void close(){
