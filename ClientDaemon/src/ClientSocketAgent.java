@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 import org.json.simple.JSONObject;
@@ -34,32 +35,31 @@ public class ClientSocketAgent {
 	public void getFile(){
 		//receive file from ServerSocketAgent
 		String filename = new String();
-		int c;
-		FileOutputStream fos;
 		
-		try {			
+		try {
 			filename = dis.readUTF();
-			
+			System.out.println(filename);
 			File localDir = new File(System.getProperty("user.home"),".enmscd");
 			File actiondir = new File(localDir,"actions");
 			File f = new File(actiondir,filename);
-			fos = new FileOutputStream(f);
 			if(!f.exists()){
 				f.createNewFile();
 			}
 			else{
 				f.setWritable(true);
 			}
-					byte[] bytes = new byte[8];
-			while(dis.read(bytes)>-1){
-				fos.write(bytes);
+			
+			FileOutputStream output = new FileOutputStream(f);
+			byte[] buffer  = new byte[(int) dis.readLong()];
+			int c=0;
+			System.out.println(buffer.length+"isbufferlength");
+			if((c = dis.read(buffer))>0){
+				System.out.println("here4"+buffer.length);
+				output.write(buffer, 0, c);
 			}
 			
-			fos.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			output.close();
+		} catch (IOException e) {e.printStackTrace();}
 	}
 	
 	public int readActionId(){

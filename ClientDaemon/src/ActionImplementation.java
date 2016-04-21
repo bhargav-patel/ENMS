@@ -1,7 +1,3 @@
-import java.io.File;
-
-import javax.swing.filechooser.FileSystemView;
-
 import org.json.simple.JSONObject;
 
 

@@ -1,3 +1,4 @@
+import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -43,17 +44,21 @@ public class ServerSocketAgent {
 
 	public int uploadFile(Monitor mon, String fileName, File path){
 		try {
-			dos.writeInt(mon.getAction_id());
+
 			File file = new File(path,fileName);
 			FileInputStream fis = new FileInputStream(file);
 			
-			dos.writeUTF(fileName);
-			int c;
-			byte[] bytes = new byte[8];
-			while(fis.read(bytes)>-1){
-				dos.write(bytes);
-			}
-
+			dos.writeUTF(fileName);//send filename
+			
+			byte[] buffer = new byte[(int) file.length()];
+			dos.writeLong(buffer.length);//send fileSize
+			
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			bis.read(buffer,0,buffer.length);
+			System.out.println(buffer.length+"isBufferLength");
+			dos.write(buffer);
+			
+			bis.close();
 			fis.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -76,9 +81,9 @@ public class ServerSocketAgent {
 		try {
 			dos.writeInt(mon.getAction_id());
 			if(receiveMessage().equalsIgnoreCase("json_NotAvailable")){
-				pushActionToClient(mon);
+				pushActionToClient(mon,"both");
 			}
-			//dataoutputwriter.close();
+			
 			dh.println(">>>>>>>>"+socket.isClosed()+socket.isConnected());
 			ObjectInputStream ois = new ObjectInputStream(dis);
 			dh.println("socket created and got input stream");
@@ -101,15 +106,15 @@ public class ServerSocketAgent {
 		return monRes;
 	}
 
-	private void pushActionToClient(Monitor mon) {
-		uploadFile(mon, String.valueOf(mon.getAction_id()).concat(".json"), null);
-		File file = new File(String.valueOf(mon.getAction_id()).concat(".json"));
-		JSONParser parser = new JSONParser();
-		JSONObject actionFileName = null;
-		try {
-			actionFileName = (JSONObject)parser.parse(new FileReader(file));
-		} catch (IOException | ParseException e) {e.printStackTrace();}
-		uploadFile(mon, actionFileName.get("Name").toString().concat(".class"), null);
+	private void pushActionToClient(Monitor mon, String files_to_send) {
+			uploadFile(mon, String.valueOf(mon.getAction_id()).concat(".json"), null);
+			File file = new File(String.valueOf(mon.getAction_id()).concat(".json"));
+			JSONParser parser = new JSONParser();
+			JSONObject actionFileName = null;
+			try {
+				actionFileName = (JSONObject)parser.parse(new FileReader(file));
+			} catch (IOException | ParseException e) {e.printStackTrace();}
+			uploadFile(mon, actionFileName.get("Name").toString().concat(".class"), null);
 	}
 	
 	public String receiveMessage(){
