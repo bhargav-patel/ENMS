@@ -47,6 +47,7 @@ public class ServerSocketAgent {
 
 			File file = new File(path,fileName);
 			FileInputStream fis = new FileInputStream(file);
+			System.out.println(file.getCanonicalPath());
 			
 			dos.writeUTF(fileName);//send filename
 			
@@ -55,7 +56,7 @@ public class ServerSocketAgent {
 			
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			bis.read(buffer,0,buffer.length);
-			System.out.println(buffer.length+"isBufferLength");
+			
 			dos.write(buffer);
 			
 			bis.close();
@@ -107,14 +108,14 @@ public class ServerSocketAgent {
 	}
 
 	private void pushActionToClient(Monitor mon, String files_to_send) {
-			uploadFile(mon, String.valueOf(mon.getAction_id()).concat(".json"), null);
-			File file = new File(String.valueOf(mon.getAction_id()).concat(".json"));
+			uploadFile(mon, String.valueOf(mon.getAction_id()).concat(".json/"), new File(new File("enmsActions"),"json"));
+			File file = new File(new File(new File("enmsActions"),"json"),String.valueOf(mon.getAction_id()).concat(".json"));
 			JSONParser parser = new JSONParser();
 			JSONObject actionFileName = null;
 			try {
 				actionFileName = (JSONObject)parser.parse(new FileReader(file));
 			} catch (IOException | ParseException e) {e.printStackTrace();}
-			uploadFile(mon, actionFileName.get("Name").toString().concat(".class"), null);
+			uploadFile(mon, actionFileName.get("Name").toString().concat(".class/"), new File(new File("enmsActions"),"class"));
 	}
 	
 	public String receiveMessage(){

@@ -46,7 +46,7 @@ public class analyseMonitor extends HttpServlet {
 		
 		try {
 			int monitorid = Integer.parseInt(request.getParameter("monitorid"));
-			
+			int actionid = Integer.parseInt(request.getParameter("actionid"));
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","temppass");
 			Statement stmt = conn.createStatement();
@@ -57,7 +57,6 @@ public class analyseMonitor extends HttpServlet {
 				json.put("Poll_Time", rs.getTimestamp(2).toString());
 				JSONParser parser = new JSONParser();
 				json.put("resultData", parser.parse(rs.getString(3)));
-				System.out.println(parser.parse(rs.getString(3)).toString());
 				json.put("monitor_id", rs.getInt(4));
 			}
 			
