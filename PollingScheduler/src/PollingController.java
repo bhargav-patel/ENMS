@@ -43,15 +43,21 @@ public class PollingController {
 				
 				@Override
 				public int sendRequest() {
+					if(monitor.getAction_id()==15){
+						if(new DBAgent().is_fired(monitor.getAction_id())){
+							return 0;
+						}
+					}
+					
 					ServerSocketAgent serversocketagent = new ServerSocketAgent(new DBAgent().getDeviceByID(monitor.getDevice_id()));
 					dh.println("PollingController->sendRequest to :"+monitor.getId()+monitor.getName());
-					
 					MonitorResult mr = serversocketagent.sendExecuteRequest(monitor);
 					serversocketagent.close();
 					dh.println("Recieved monitor result and now updating monitorResult to DB");
 					DBAgent dba = new DBAgent();
 					dba.updateMonitorResult(mr);
 					dba.updateLastPollByMonitorID(monitor);
+					dba.resetFired(15);
 					dba.close();
 					dh.println("request completed");
 					return 0;

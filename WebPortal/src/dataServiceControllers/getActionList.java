@@ -47,8 +47,8 @@ public class getActionList extends HttpServlet {
 			while (rs.next()) {
 				JSONObject json = new JSONObject();
 				json.put("id", rs.getInt(1));
-				json.put("action_category_id", rs.getInt(2));
-				json.put("name", rs.getString(3));
+				json.put("action_category_id", rs.getInt(3));
+				json.put("name", rs.getString(2));
 				
 				result.add(json);
 			}

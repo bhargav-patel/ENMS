@@ -57,6 +57,41 @@ public class DBAgent {
 		return action;
 	}
 	
+	public boolean is_fired(int action_id){
+			DebugHelper dh = new DebugHelper("DBAgent", "is_fired()");
+			dh.debugThisFunction(true);
+			dh.header();
+			
+			dh.println("getting actionbyid");//for debug
+			try {
+				ResultSet rs =stmt.executeQuery("SELECT fired FROM userdefinedaction WHERE action_id="+action_id);
+				rs.next();
+				if(rs.getInt(1)==0)
+					return true;
+			} catch (SQLException e) {e.printStackTrace();}
+			
+			//set action parameters from action table from database
+			
+			dh.footer();
+			return false;
+	}
+	
+	public void resetFired(int action_id){
+		DebugHelper dh = new DebugHelper("DBAgent", "is_fired()");
+		dh.debugThisFunction(true);
+		dh.header();
+		
+		dh.println("getting actionbyid");//for debug
+		try {
+			stmt.executeUpdate("UPDATE `userdefinedaction` SET `fired`='0' WHERE `action_id`='"+action_id+"'");
+		} catch (SQLException e) {e.printStackTrace();}
+		
+		//set action parameters from action table from database
+		
+		dh.footer();
+}
+	
+	
 	public Device getDeviceByID(int id){
 		DebugHelper dh = new DebugHelper("DBAgent", "getDeviceByID()");
 		dh.debugThisFunction(true);
@@ -131,7 +166,8 @@ public class DBAgent {
 	public int insertMonitorResult(MonitorResult mr){
 		int status = 0;
 		try {
-			status = stmt.executeUpdate("INSERT INTO `monitor_result` (`Poll_Time`, `resultData`, `monitor_id`) VALUES ('"+mr.getPollTime()+"', '\""+mr.getResultData()+"\"', '"+mr.getMonitor_id()+"');");
+			System.out.println(":::::::::????//"+mr.getResultData());
+			status = stmt.executeUpdate("INSERT INTO `monitor_result` (`Poll_Time`, `resultData`, `monitor_id`) VALUES ('"+mr.getPollTime()+"', '"+mr.getResultData()+"', '"+mr.getMonitor_id()+"');");
 		} catch (SQLException e) {e.printStackTrace();}
 		
 		return status;
@@ -145,7 +181,6 @@ public class DBAgent {
 		dh.println("update mr");
 //		dh.println("updating monitor result with value :"+mr.getId()+mr.getResultData());//for debug
 		int status = 0;
-		
 		try {
 			status = stmt.executeUpdate("UPDATE `monitor_result` SET `Poll_Time`='"+mr.getPollTime()+"', `resultData`='"+mr.getResultData()+"', `monitor_id`='"+mr.getMonitor_id()+"' WHERE `id`='"+mr.getId()+"';");
 		} catch (SQLException e) {System.out.println("MonitorResult entry not found so adding new value");}

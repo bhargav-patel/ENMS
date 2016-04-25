@@ -1,10 +1,12 @@
+import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 
 import org.json.simple.JSONObject;
@@ -32,6 +34,37 @@ public class ClientSocketAgent {
 			dos.writeUTF(Message);
 		} catch (IOException e) {e.printStackTrace();}
 	}
+	
+	public int uploadFile(String fileName, File path){
+		try {
+
+			File file = new File(path,fileName);
+			FileInputStream fis = new FileInputStream(file);
+			System.out.println(file.getCanonicalPath());
+			
+			dos.writeUTF(fileName);//send filename
+			
+			byte[] buffer = new byte[(int) file.length()];
+			dos.writeLong(buffer.length);//send fileSize
+			
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			bis.read(buffer,0,buffer.length);
+			
+			dos.write(buffer);
+			
+			bis.close();
+			fis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return 0;		
+	}
+
+	
+	
 	public void getFile(){
 		//receive file from ServerSocketAgent
 		String filename = new String();
@@ -82,6 +115,7 @@ public class ClientSocketAgent {
 		try {
 			//send action execution result to server via socket
 			ObjectOutputStream oos = new ObjectOutputStream(dos);
+			System.out.println(action.toJSONString());
 			oos.writeObject(action);
 			oos.flush();
 			oos.close();

@@ -1,8 +1,5 @@
-<%@page import="org.json.simple.JSONObject"%>
 <%@page import="org.json.simple.parser.JSONParser"%>
-<%@page import="java.io.FileReader"%>
-<%@page import="java.io.BufferedInputStream"%>
-<%@page import="java.io.FileInputStream"%>
+<%@page import="org.json.simple.JSONObject"%>
 <%@page import="java.io.File"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -13,16 +10,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-<%String result = request.getParameter("data"); %>
+<%String result = request.getParameter("data"); 
+JSONObject jsonobj = new JSONObject();
+JSONParser parser = new JSONParser();
+jsonobj = (JSONObject)parser.parse(result);
+String filepath = (String)jsonobj.get("image");
+%>
 <div id="hiddenDiv" hidden><%=result%></div>
-
-<h2 style="text-decoration:underline">Process running on Remote Host</h2>
-<table id="table1" class="table table-striped">
-<thead>
-<tr><th>#</th> <th>PID</th> <th>ProcessName</th></tr>
-</thead>
-<tbody>
-</tbody>
-</table>
+<h3>Screenshot:</h3><br>
+<img src=<%=filepath+"?time="+System.currentTimeMillis()%> width="560"></img>
 </body>
 </html>

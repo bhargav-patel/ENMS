@@ -16,6 +16,7 @@
 			Data.getActionList()
 			.success(function(data){
 				$scope.actions = data;
+				console.log(data);
 			})
 			.error(function(){
 				console.log("ERROR");

@@ -12,6 +12,7 @@ import org.json.simple.parser.ParseException;
 public class ActionExecution {
 	private String fileName;
 	private String runFunction;
+	private String parameter;
 	private URLClassLoader loader;
 	
 	public ActionExecution(JSONObject action) {
@@ -23,6 +24,7 @@ public class ActionExecution {
 		// TODO Auto-generated constructor stub
 		fileName = (String) action.get("Name");
 		runFunction = (String) action.get("runFunction");
+		parameter = (String) action.get("Parameter");
 		
 		dh.footer();
 	}
@@ -39,6 +41,12 @@ public class ActionExecution {
 	public void setrunFunction(String runFunction) {
 		this.runFunction = runFunction;
 	}
+	public String getParameter() {
+		return parameter;
+	}
+	public void setParameter(String parameter) {
+		this.parameter = parameter;
+	}
 	
 	public JSONObject ExecuteAction(JSONObject action){//rename to ExecuteAction and delete existing functin
 		JSONObject result = new JSONObject();
@@ -49,7 +57,7 @@ public class ActionExecution {
 			Object obj = c.newInstance();
 			Method m = c.getDeclaredMethod(runFunction,new Class[]{Object.class});
 			m.setAccessible(true);
-			Object resultobj = m.invoke(obj,new Object[]{null});
+			Object resultobj = m.invoke(obj,new Object[]{parameter});
 			result = (JSONObject)resultobj;
 		} catch (Exception e) {
 			e.printStackTrace();

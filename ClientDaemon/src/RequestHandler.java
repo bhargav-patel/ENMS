@@ -23,13 +23,19 @@ public class RequestHandler implements Runnable {
 		
 		JSONObject jsonResult = new JSONObject();
 		
-		File actionFile = setActionFile();
+		File actionFile = getActionFile();
 		
 		dh.println(actionFile.getName());
 		
 		jsonResult = executeFile(actionFile.getName());
 
 		csa.sendActionResponse(jsonResult);
+		if(action_id==16){
+			System.out.println("receiveFile");
+			csa.sendMessage("receiveFile");
+			System.out.println("receiveFile");
+			csa.uploadFile("E:\\Screenshot.jpg", null);
+		}
 		csa.close();
 		
 		dh.footer();
@@ -40,7 +46,7 @@ public class RequestHandler implements Runnable {
 	 * if not then accept from server by sending message Not available
 	 * else send message to server as available
 	 */
-	private File setActionFile() {
+	private File getActionFile() {
 		File actionDir = new File(LocalIO.getConfig().get("actionDir").toString());
 		File actionFile = new File(actionDir, action_id+".json");
 		
@@ -50,7 +56,9 @@ public class RequestHandler implements Runnable {
 			csa.getFile();
 		}
 		else{
-			csa.sendMessage("json_Available");
+			csa.sendMessage("json_NotAvailable");
+			csa.getFile();
+			csa.getFile();
 		}
 		return actionFile;
 	}

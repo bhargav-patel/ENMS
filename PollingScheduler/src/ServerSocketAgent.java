@@ -4,6 +4,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -70,6 +71,37 @@ public class ServerSocketAgent {
 		return 0;		
 	}
 	
+	public void getFile(){
+		//receive file from ServerSocketAgent
+		String filename = new String();
+		
+		try {
+			filename = dis.readUTF();
+			System.out.println(filename);
+			File localDir = new File(System.getProperty("user.home"),".enmscd");
+			File actiondir = new File(localDir,"actions");
+			File f = new File(actiondir,filename);
+			if(!f.exists()){
+				f.createNewFile();
+			}
+			else{
+				f.setWritable(true);
+			}
+			
+			FileOutputStream output = new FileOutputStream(f);
+			byte[] buffer  = new byte[(int) dis.readLong()];
+			int c=0;
+			System.out.println(buffer.length+"isbufferlength");
+			if((c = dis.read(buffer))>0){
+				System.out.println("here4"+buffer.length);
+				output.write(buffer, 0, c);
+			}
+			
+			output.close();
+		} catch (IOException e) {e.printStackTrace();}
+	}
+
+	
 	public MonitorResult sendExecuteRequest(Monitor mon){
 		DebugHelper dh = new DebugHelper("ServerSocketAgent", "sendExecuteRequest()");
 		dh.debugThisFunction(true);
@@ -96,6 +128,11 @@ public class ServerSocketAgent {
 			dh.println("after monitor id = "+monRes.getId());
 			monRes.setPollTime(new Timestamp(new Date().getTime()));
 			monRes.setMonitor_id(mon.getId());
+			System.out.println("UTF RECEIVE FILES");
+			if(dis.readUTF().equals("receiveFile")){
+				System.out.println("UTF RECEIVE FILES");
+				getFile();
+			}
 			ois.close();
 			//datainputreader.close();
 		} catch (IOException | ClassNotFoundException e) {
