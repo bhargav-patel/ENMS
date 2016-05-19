@@ -19,36 +19,50 @@ public class PollingController {
 		dh.debugThisFunction(true);
 		dh.header();
 		
-		//TODO schedule and start monitors logic
+		//schedule and start monitors logic
 		for (final Monitor monitor : monitorList) {//Runs for each monitors
 			int count =0 ;count++;//for debug
 			Thread t = new Thread(new ActionRequest() {//created thread for each monitor
 				@Override
-				public void run() {
-					// TODO Schedule timer for time equal to PollingDuration of monitor in seconds
+				public void run() {//code for each thread execution
+					
+					//Schedule timer for time equal to PollingDuration of monitor in seconds
 					Thread.currentThread().setName(monitor.getId()+"|"+monitor.getName());
 					
 					dh.println("THREAD STARTED "+Thread.currentThread().getId()+":"+monitor.getId()+"|"+monitor.getName());
 					dh.println(monitorList.size()+"");
 					
-					Timer timer = new Timer();
-					timer.schedule(new TimerTask() {
-						@Override
-						public void run() {
-							dh.println("thread->run;-sending request");
-							sendRequest();//on completion of timer sends execute request
-						}
-					}, 0,monitor.getPollingDuration()*1000);
-				}
+					DBAgent dba = new DBAgent();
+					if (dba.getActionCategory(monitor.getId())==0 || dba.getActionCategory(monitor.getId())==2) {
+						Timer timer = new Timer();
+						timer.schedule(new TimerTask() {
+							@Override
+							public void run() {
+								dh.println("thread->run;-sending request");
+								sendRequest();//on completion of timer sends execute request
+							}
+						}, 0, monitor.getPollingDuration() * 1000);
+					}
+					else{
+						sendRequest();
+					}
+					dba.close();
+					
+				}//code over
 				
 				@Override
 				public int sendRequest() {
-					if(monitor.getAction_id()==15){
-						if(new DBAgent().is_fired(monitor.getAction_id())){
-							return 0;
-						}
+					//check for fired action(s) 
+					DBAgent dbagent = new DBAgent();
+					if (dbagent.getActionCategory(monitor.getId())==2) {
+							if(dbagent.is_fired(monitor.getAction_id())){
+								dbagent.updateLastPollByMonitorID(monitor);
+								return 0;
+							}
 					}
+					dbagent.close();
 					
+					//regular polling application
 					ServerSocketAgent serversocketagent = new ServerSocketAgent(new DBAgent().getDeviceByID(monitor.getDevice_id()));
 					dh.println("PollingController->sendRequest to :"+monitor.getId()+monitor.getName());
 					MonitorResult mr = serversocketagent.sendExecuteRequest(monitor);
@@ -57,7 +71,13 @@ public class PollingController {
 					DBAgent dba = new DBAgent();
 					dba.updateMonitorResult(mr);
 					dba.updateLastPollByMonitorID(monitor);
-					dba.resetFired(15);
+
+					//reset fired actions to stop second time execution
+					if (dba.getActionCategory(monitor.getId())==2) {
+						dba.resetFired(monitor.getAction_id());
+					}
+					
+					//always close agent and sockets after use to prevent overflow in connection
 					dba.close();
 					dh.println("request completed");
 					return 0;
@@ -70,5 +90,5 @@ public class PollingController {
 		dh.footer();
 		return 0;
 	}
-
+	
 }

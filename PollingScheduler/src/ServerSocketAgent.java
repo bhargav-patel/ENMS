@@ -45,20 +45,22 @@ public class ServerSocketAgent {
 
 	public int uploadFile(Monitor mon, String fileName, File path){
 		try {
-
+			final int BUFFER_lENGTH = 1;
 			File file = new File(path,fileName);
 			FileInputStream fis = new FileInputStream(file);
 			System.out.println(file.getCanonicalPath());
 			
 			dos.writeUTF(fileName);//send filename
 			
-			byte[] buffer = new byte[(int) file.length()];
-			dos.writeLong(buffer.length);//send fileSize
+			byte[] buffer = new byte[BUFFER_lENGTH];
+			dos.writeLong(file.length());//send fileSize
 			
+			dos.writeInt(BUFFER_lENGTH);//send bufferLength
 			BufferedInputStream bis = new BufferedInputStream(fis);
-			bis.read(buffer,0,buffer.length);
-			
-			dos.write(buffer);
+			for(int i=0; i<file.length();i+=BUFFER_lENGTH){
+				bis.read(buffer,0,buffer.length);
+				dos.write(buffer);
+			}
 			
 			bis.close();
 			fis.close();

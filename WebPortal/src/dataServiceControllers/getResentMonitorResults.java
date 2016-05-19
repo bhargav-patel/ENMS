@@ -52,14 +52,20 @@ public class getResentMonitorResults extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","temppass");
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM monitor_result order by Poll_Time DESC LIMIT "+howMany+"");
+			ResultSet rs = stmt.executeQuery("SELECT monitor_result.id,Poll_Time,monitor_id,monitor.name,monitor.polling_duration,monitor.lastPoll,action.name,action.actionCategory_id,device.name,device.ip FROM monitor_result,monitor,action,device WHERE monitor_id=monitor.id AND monitor.action_id=action.id AND monitor.device_id=device.id ORDER BY Poll_Time DESC LIMIT "+howMany+"");
 			
 			while (rs.next()) {
 				JSONObject json = new JSONObject();
 				json.put("id", rs.getInt(1));
 				json.put("Poll_Time", rs.getTimestamp(2).toString());
-				json.put("resultData", rs.getString(3));
-				json.put("monitor_id", rs.getInt(4));
+				json.put("monitor_id", rs.getInt(3));
+				json.put("monitorName", rs.getString(4));
+				json.put("pollingDuration", rs.getInt(5));
+				json.put("lastPoll", rs.getTimestamp(6).toString());
+				json.put("actionName", rs.getString(7));
+				json.put("actionCategoryID", rs.getInt(8));
+				json.put("deviceName", rs.getString(9));
+				json.put("ip", rs.getString(10));
 				
 				result.add(json);
 			}

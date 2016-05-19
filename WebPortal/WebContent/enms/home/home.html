@@ -38,61 +38,26 @@
 	</div>
 	
 	<div class="col-md-12">
-		<div class="panel panel-primary">
+		<div class="panel panel-primary" >
 			<div class="panel-heading">
 				<h2 class="text-center">Recent Stats</h2>
 			</div>
-			<div class="panel-body">
+			<div class="panel-body" style="background-color:#ad8;" ng-repeat="i in [0,1,2,3,4]"  >
 			
 			<div class="panel panel-success">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">MonitorID:  {{recentMonitorLogs[0].monitor_id}}</h3>
-			  </div>
-			  <div class="panel-body">
-			    <div class="alert alert-info">Time of Polling:   {{recentMonitorLogs[0].Poll_Time}}</div>
-			    <div class="well" ng-repeat="(k,v) in recentMonitorLogs[0].resultData" ><h3>ResultData:  </h3><br>{{k}}{{v}}<br></div>
-			  </div>
+			  	<div class="panel-heading">
+			    	<h3 class="panel-title">Action Name:  {{recentMonitorLogs[i].actionName}}</h3>
+		 		</div>
+				<div class="panel-body" style="background-color:#565545;">
+				   	<div class="well">
+					   	<h4 style="color:#761;">Device Name:   {{recentMonitorLogs[i].deviceName}}<br></h4>
+					    <h5 style="color:#e71;">Time of Result Update:   {{recentMonitorLogs[i].Poll_Time}}<br></h5>
+					    Monitor ID: {{recentMonitorLogs[i].monitor_id}}<br>
+				    </div>
+			  	</div>
 			</div>
 			
-			<div class="panel panel-success">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">MonitorID:  {{recentMonitorLogs[1].monitor_id}}</h3>
-			  </div>
-			  <div class="panel-body">
-			    <div class="alert alert-info">Time of Polling:   {{recentMonitorLogs[1].Poll_Time}}</div>
-			    <div class="well"><h3>ResultData:  </h3>{{recentMonitorLogs[1].resultData}}</div>
-			  </div>
-			</div>
 			
-			<div class="panel panel-success">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">MonitorID:  {{recentMonitorLogs[2].monitor_id}}</h3>
-			  </div>
-			  <div class="panel-body">
-			    <div class="alert alert-info">Time of Polling:   {{recentMonitorLogs[2].Poll_Time}}</div>
-			    <div class="well"><h3>ResultData:  </h3>{{recentMonitorLogs[2].resultData}}</div>
-			  </div>
-			</div>
-			
-			<div class="panel panel-success">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">MonitorID:  {{recentMonitorLogs[3].monitor_id}}</h3>
-			  </div>
-			  <div class="panel-body">
-			    <div class="alert alert-info">Time of Polling:   {{recentMonitorLogs[3].Poll_Time}}</div>
-			    <div class="well"><h3>ResultData:  </h3>{{recentMonitorLogs[3].resultData}}</div>
-			  </div>
-			</div>
-			
-			<div class="panel panel-success">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">MonitorID:  {{recentMonitorLogs[4].monitor_id}}</h3>
-			  </div>
-			  <div class="panel-body">
-			    <div class="alert alert-info">Time of Polling:   {{recentMonitorLogs[4].Poll_Time}}</div>
-			    <div class="well"><h3>ResultData:  </h3>{{recentMonitorLogs[4].resultData}}</div>
-			  </div>
-			</div>
 		
 			</div>
 		</div>

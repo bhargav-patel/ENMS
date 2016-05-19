@@ -117,6 +117,21 @@ public class DBAgent {
 		return device;
 	}
 	
+	public int getActionCategory(int monitorID){
+			int actionCategory_id = 0;
+			ResultSet rs;
+			try {
+				rs = stmt.executeQuery("SELECT actionCategory_id FROM monitor,action WHERE monitor.id="+monitorID+" AND monitor.action_id=action.id");
+				rs.next();
+				actionCategory_id = rs.getInt(1);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return actionCategory_id;
+	}
+	
+	
 	public Monitor getMonitorByID(int id){
 		DebugHelper dh = new DebugHelper("DBAgent", "getMonitorByID()");
 		dh.debugThisFunction(true);
