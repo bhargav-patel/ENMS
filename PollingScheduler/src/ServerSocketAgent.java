@@ -119,7 +119,6 @@ public class ServerSocketAgent {
 				pushActionToClient(mon,"both");
 			}
 			
-			dh.println(">>>>>>>>"+socket.isClosed()+socket.isConnected());
 			ObjectInputStream ois = new ObjectInputStream(dis);
 			dh.println("socket created and got input stream");
 			JSONObject action = (JSONObject)ois.readObject();
@@ -130,7 +129,7 @@ public class ServerSocketAgent {
 			dh.println("after monitor id = "+monRes.getId());
 			monRes.setPollTime(new Timestamp(new Date().getTime()));
 			monRes.setMonitor_id(mon.getId());
-			System.out.println("UTF RECEIVE FILES");
+			System.out.println(monRes.getResultData());
 			if(dis.readUTF().equals("receiveFile")){
 				System.out.println("UTF RECEIVE FILES");
 				getFile();

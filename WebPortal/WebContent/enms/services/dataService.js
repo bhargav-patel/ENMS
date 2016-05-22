@@ -31,6 +31,15 @@
 			});
 		};
 		
+		this.getActionCategoryList = function(){
+			return $http({
+			    method: 'POST',
+			    url: 'getActionCategoryList',
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
+		
+		
 		this.getActionList = function(){
 			return $http({
 			    method: 'GET',
@@ -86,6 +95,32 @@
 			return $http({
 			    method: 'POST',
 			    url: 'deleteMonitor',
+			    data: param,
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
+		
+		this.addAction = function(action_id,action_name,category){
+			var param = $.param({
+				action_id:action_id,
+				action_name:action_name,
+				category:category
+            });
+			return $http({
+			    method: 'POST',
+			    url: 'addAction',
+			    data: param,
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			});
+		};
+		
+		this.deleteAction = function(action_id){
+			var param = $.param({
+				action_id:action_id
+            });
+			return $http({
+			    method: 'POST',
+			    url: 'deleteAction',
 			    data: param,
 			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			});

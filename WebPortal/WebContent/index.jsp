@@ -38,6 +38,9 @@
 <script src="enms/services/dataService.js"></script>
 <script src="enms/AnalyseMonitorResults/AnalyseMonitorResult.js"></script>
 <script src="enms/overview/overview.js"></script>
+<script src="enms/action/action.js"></script>
+<script src="enms/action/add/add.js"></script>
+
 <script>
   $.material.init();
 </script>

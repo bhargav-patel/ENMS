@@ -1,0 +1,31 @@
+<div class="col-md-8 col-md-offset-2">
+<a href="#/action" class="btn btn-raised btn-primary">Back to Action List</a>
+	<div ng-repeat="alert in alerts" ng-show="alert.show">
+		<div class="alert alert-dismissible alert-{{alert.type}}">
+		  <button type="button" class="close" data-dismiss="alert">×</button>
+		  <strong>{{alert.msg}}</strong>
+		</div>	
+	</div>
+	<div class="well bs-component">
+		<form class="form-horizontal" ng-submit="submit()">
+		  <fieldset>
+		    <legend>Add Action</legend>
+		    <div class="form-group">
+		      <label for="actionCategory_id" class="col-md-2 control-label">ActionCategory ID</label>
+		
+		      <div class="col-md-10">
+		        <input type="text" class="form-control" id="actionCategory_id" placeholder="Enter ActionCategory ID" ng-model="actionCategory_id">
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <label for="actionCategory_name" class="col-md-2 control-label">ActionCategory Name</label>
+		    
+		    <div class="form-group">
+		      <div class="col-md-10 col-md-offset-2">
+		        <button type="submit" class="btn btn-primary">Submit</button>
+		      </div>
+		    </div>
+		  </fieldset>
+		</form>
+	</div>
+</div>

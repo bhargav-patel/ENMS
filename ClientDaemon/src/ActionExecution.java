@@ -52,6 +52,7 @@ public class ActionExecution {
 		JSONObject result = new JSONObject();
 		String actionDir = LocalIO.getConfig().get("actionDir").toString();
 		try {
+			System.out.println("abcdefghijklmnopqrstuvwxyz"+runFunction);
 			loader = new URLClassLoader(new URL[]{new URL("file://"+ actionDir+"/")});
 			Class<?> c = loader.loadClass(fileName);
 			Object obj = c.newInstance();

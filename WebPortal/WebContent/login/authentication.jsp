@@ -26,7 +26,7 @@
 			session.setAttribute("password", password);
 		}
 		else{
-			response.sendRedirect("login.html");
+			response.sendRedirect("login.jsp?OAuth=false");
 		}
 		rs.close();
 		stmt.close();

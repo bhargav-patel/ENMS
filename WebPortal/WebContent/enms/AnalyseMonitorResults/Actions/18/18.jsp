@@ -5,19 +5,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>NetStats</title>
 </head>
 <body>
 <%String result = request.getParameter("data"); %>
 <div id="hiddenDiv" hidden><%=result%></div>
-<h2 style="text-decoration:underline;color:#4d2600;">Disk Details</h2>
-<table id="table1" class="table" style="background-color:#4d2600;color:#ffff99;">
-<thead>
-<tr><th>#</th> <th>DiskDetails</th></tr>
-</thead>
-<tbody >
-</tbody>
-</table>
-
+<div style="font-size:2em;"><p>Graph for Byte In/Out VS. Time.<br>
+<span style="background-color:#ccddff;color:#ccddff">  TxR  </span>Tx<span style="background-color:#99bbff;color:#99bbff">  Rx  </span>Rx</p></div>
+<canvas id="analyse_Monitor2" width="550" height="300"></canvas>
 </body>
 </html>

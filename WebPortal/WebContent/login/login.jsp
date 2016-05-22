@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,8 +10,6 @@
 	<link rel="stylesheet" href="../enms/lib/bower_components/bootstrap-material-design/dist/css/material-fullpalette.min.css">
 	<link rel="stylesheet" href="../enms/css/custom.css">
 </head>
-
-
 <body>
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -24,6 +24,14 @@
 <form class="form-horizontal" action="authentication.jsp">
   <fieldset>
     <legend>Sign in</legend>
+    
+    <%
+    if(request.getParameterNames().hasMoreElements()){
+	    if(request.getParameter("OAuth").equals("false")){
+	    	%><span style="color:RED;">Incorrect Credentials. Please try again with correct Username and Password.</span><%
+	    }
+    }
+    %>
     <div class="form-group">
       <label for="inputPassword" class="col-md-2 control-label">Username</label>
       <div class="col-md-10">
@@ -31,6 +39,7 @@
       </div>
     </div>
     
+   
     <div class="form-group">
       <label for="inputPassword" class="col-md-2 control-label">Password</label>
 
@@ -49,7 +58,7 @@
     </div>
     <div class="form-group">
       <div class="col-md-10 col-md-offset-2">
-         <span class="glyphicon glyphicon-lock"></span><a href="#">  Forgot password</a>
+         <span class="glyphicon glyphicon-lock"></span><a href="forgot.jsp">  Forgot password</a>
       </div>
     </div>
     
@@ -65,5 +74,6 @@
 <script>
   $.material.init();
   </script>
+</body>
 </body>
 </html>

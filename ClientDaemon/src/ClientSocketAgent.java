@@ -68,9 +68,9 @@ public class ClientSocketAgent {
 	public void getFile(){
 		//receive file from ServerSocketAgent
 		String filename = new String();
-		
+
 		try {
-			filename = dis.readUTF();
+			filename = dis.readUTF();//read FileName
 			System.out.println(filename);
 			File localDir = new File(System.getProperty("user.home"),".enmscd");
 			File actiondir = new File(localDir,"actions");
@@ -83,14 +83,17 @@ public class ClientSocketAgent {
 			}
 			
 			FileOutputStream output = new FileOutputStream(f);
-			byte[] buffer  = new byte[(int) dis.readLong()];
+			byte[] buffer  = new byte[1];
+			int fileLength = (int) dis.readLong();//read fileLength
+			final int BUFFER_lENGTH = dis.readInt();//read bufferLength
 			int c=0;
-			System.out.println(buffer.length+"isbufferlength");
-			if((c = dis.read(buffer))>0){
-				System.out.println("here4"+buffer.length);
-				output.write(buffer, 0, c);
-			}
 			
+			System.out.println(buffer.length+"isbufferlength");
+			for(int i=0;i<fileLength;i+=BUFFER_lENGTH){
+				if((c = dis.read(buffer))>0){
+					output.write(buffer, 0, c);
+				}
+			}
 			output.close();
 		} catch (IOException e) {e.printStackTrace();}
 	}

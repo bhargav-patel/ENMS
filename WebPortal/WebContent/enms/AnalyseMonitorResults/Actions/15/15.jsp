@@ -14,11 +14,12 @@
 <body>
 <%String result = request.getParameter("data"); %>	
 <div id="hiddenDiv" hidden><%=result%></div>
-<form action="http://localhost:8080/WebPortal/enms/AnalyseMonitorResults/Actions/15/15_kill.jsp">
-<input type="text" name="kill_btn" value="">
-<input type="submit">
-</form>
-
+<div class="jumbotron" style="background-color:#630;color:#ffb366;">
+	<form action="http://localhost:8080/WebPortal/enms/AnalyseMonitorResults/Actions/15/15_kill.jsp">
+	<span style="font-family:'Comic Sans MS', cursive, sans-serif;">Enter Name of Process : <input type="text" name="kill_btn" value="" class="form-control" style="color:WHITE;"></span>
+	<input type="submit" class="btn btn-default" style="background-color:#ffb366;">
+	</form>
+</div>
 <%String Pid = request.getParameter("kill_btn"); %>
 <%
 File file = new File("C:\\Users\\Parth-OZ\\Desktop\\Project\\ENMS\\PollingScheduler\\enmsActions\\json\\15.json");
@@ -28,7 +29,7 @@ int c=0;
 while( (c=read.read())!=-1){
 	s += (char)c;
 }
-out.print(s);
+
 %>	
 
 

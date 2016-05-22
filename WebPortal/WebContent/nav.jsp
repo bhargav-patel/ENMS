@@ -23,7 +23,7 @@
 	            </li>                       
 	          </ul>
          	</li>
-			<li><a href="login/login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+			<li><a href="login/login.jsp"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 	  </ul>
 	</div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

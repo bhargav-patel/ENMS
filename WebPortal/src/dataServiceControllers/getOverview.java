@@ -65,7 +65,7 @@ public class getOverview extends HttpServlet {
 					result.put("live", "remove");
 				}
 				jsonArray.add(result);
-				System.out.println(stamp.getTime() + "::::::DB timestamp=     "+ rs.getTimestamp(4).getTime() + "::::::rs.getint=  " + rs.getInt(1)+" ::::result=  "+( ( stamp.getTime()-rs.getTimestamp(4).getTime() )/1000 ));
+				
 			}
 			response.getWriter().println(jsonArray);
 			rs.close();

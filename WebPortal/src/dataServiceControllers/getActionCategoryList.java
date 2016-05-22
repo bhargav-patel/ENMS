@@ -16,16 +16,16 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 /**
- * Servlet implementation class getActionList
+ * Servlet implementation class getActionCategoryList
  */
-@WebServlet("/getActionList")
-public class getActionList extends HttpServlet {
+@WebServlet("/getActionCategoryList")
+public class getActionCategoryList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public getActionList() {
+    public getActionCategoryList() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,7 +34,14 @@ public class getActionList extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// // TODO Auto-generated method stub
 		JSONArray result = new JSONArray();
 		response.setContentType("text/json");
 		
@@ -42,14 +49,13 @@ public class getActionList extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/enms","root","temppass");
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT action.id,action.name,action.actionCategory_id,action_category.name FROM action,action_category WHERE action.actionCategory_id=action_category.id;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM action_category");
 			
 			while (rs.next()) {
 				JSONObject json = new JSONObject();
 				json.put("id", rs.getInt(1));
 				json.put("name", rs.getString(2));
-				json.put("action_category_id", rs.getInt(3));
-				json.put("actionCategoryName", rs.getString(4));
+				
 				result.add(json);
 			}
 			
@@ -63,13 +69,6 @@ public class getActionList extends HttpServlet {
 			response.getWriter().println("Invalid Request or Server Error.");
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 	}
 
 }

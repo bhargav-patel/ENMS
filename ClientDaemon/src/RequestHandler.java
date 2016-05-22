@@ -36,6 +36,9 @@ public class RequestHandler implements Runnable {
 			System.out.println("receiveFile");
 			csa.uploadFile("E:\\Screenshot.jpg", null);
 		}
+		else{
+			csa.sendMessage("Dontreceive");
+		}
 		csa.close();
 		
 		dh.footer();
